@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tasks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f7faff;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+            color: #555;
+            margin: 0;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .grid-icon {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .grid-icon div {
+            border: 2px solid #85c1e9;
+            border-radius: 2px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 400;
+            color: #4a4a4a;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+        }
+
+        /* Adding task form */
+        .form {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .form input {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            font-size: 16px;
+            outline: none;
+            color: #4a4a4a;
+        }
+
+        .form input::placeholder {
+            color: #b0b0b0;
+        }
+
+        .form button {
+            padding: 16px 24px;
+            border-radius: 30px;
+            border: none;
+            background-color: #38d39f;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 211, 159, 0.3);
+            transition: opacity 0.2s;
+        }
+
+        .form button:hover {
+            opacity: 0.9;
+        }
+
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .task-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            text-decoration: none;
+            color: inherit;
+            justify-content: space-between;
+        }
+
+        .task-text {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+            font-weight: 400;
+            flex: 1;
+        }
+
+        .task-text.done {
+            text-decoration: line-through;
+            color: #d1d1d1;
+        }
+
+        .checkbox {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #fcfcfc;
+            border: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 15px;
+        }
+
+        .checkbox.checked {
+            background-color: #38d39f;
+            border-color: #38d39f;
+            box-shadow: 0 2px 8px rgba(56, 211, 159, 0.3);
+        }
+
+        .checkbox svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: white;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: none;
+        }
+
+        .checkbox.checked svg {
+            display: block;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #ff7675;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            text-decoration: none;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+
+            <h1 class="title">All Tasks</h1>
+        </div>
+
+        <form action="/add" method="post" class="form">
+            <input type="text" name="newTask" placeholder="Add a new task..." required autocomplete="off">
+            <button type="submit">Add</button>
+        </form>
+
+        <div class="tasks-list">
+            <% tasks.forEach(task=> { %>
+                <div class="task">
+                    <a href="/done/<%=task.id%>" class="task-content">
+                        <p class="task-text <%= task.done ? 'done' : '' %>">
+                            <%= task.text %>
+                        </p>
+                        <div class="checkbox <%= task.done ? 'checked' : '' %>">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="/delete/<%=task.id%>" class="delete-btn" aria-label="Delete">
+                        ✕
+                    </a>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+</body>
+
+</html>
