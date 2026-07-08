@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your free Inkwell account and start sharing your stories with the world.">
+  <title><%= title %> | Inkwell</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M8 22 L14 8 L18 16 L22 10 L26 22' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='22' cy='22' r='3' fill='%2306B6D4'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Inkwell Design System -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+
+    /* Steps indicator */
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 2rem;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--clr-text-muted);
+    }
+    .step.active { color: var(--clr-primary); }
+    .step.done { color: var(--clr-success); }
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--clr-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: var(--transition-base);
+    }
+    .step.active .step-circle {
+      border-color: var(--clr-primary);
+      background: var(--clr-primary);
+      color: white;
+    }
+    .step.done .step-circle {
+      border-color: var(--clr-success);
+      background: var(--clr-success);
+      color: white;
+    }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--clr-border);
+      margin: 0 6px;
+      min-width: 20px;
+    }
+
+    /* Strength bar */
+    .strength-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--clr-border);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s ease, background 0.3s ease;
+      width: 0%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     REGISTER PAGE — Centered Card with Gradient Header
+══════════════════════════════════════════════════════════ -->
+<div style="min-height:100vh; background:var(--clr-bg); display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 2rem 1rem;">
+
+  <!-- Back link -->
+  <a href="/" style="position:fixed; top:1.25rem; left:1.5rem; display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-sm); font-weight:600; color:var(--clr-text-muted); text-decoration:none; transition:var(--transition-fast);" onmouseover="this.style.color='var(--clr-primary)'" onmouseout="this.style.color='var(--clr-text-muted)'">
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+    Back to Inkwell
+  </a>
+
+  <div style="width:100%; max-width:480px; animation: fadeInUp 0.5s ease both;">
+
+    <!-- Card -->
+    <div style="background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-2xl); overflow:hidden; box-shadow:var(--shadow-xl);">
+
+      <!-- Gradient Header Panel -->
+      <div style="background:var(--grad-hero); padding:2.5rem 2rem 2rem; text-align:center; position:relative; overflow:hidden;">
+        <!-- Decorative circles -->
+        <div style="position:absolute; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.06); top:-60px; right:-40px;" aria-hidden="true"></div>
+        <div style="position:absolute; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,0.08); bottom:-30px; left:-20px;" aria-hidden="true"></div>
+
+        <!-- Logo -->
+        <a href="/" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:1.5rem; position:relative; z-index:1;">
+          <div style="width:40px;height:40px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);">
+            <i class="fa-solid fa-feather-pointed" style="color:white;font-size:16px;" aria-hidden="true"></i>
+          </div>
+          <span style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-0.03em;">Inkwell</span>
+        </a>
+
+        <h1 style="font-family:var(--font-heading);font-size:1.75rem;font-weight:800;color:white;letter-spacing:-0.03em;margin-bottom:0.5rem;position:relative;z-index:1;">
+          Create your account
+        </h1>
+        <p style="color:rgba(255,255,255,0.65); font-size:var(--fs-sm); position:relative; z-index:1;">
+          Free forever. No credit card required.
+        </p>
+      </div>
+
+      <!-- Form Body -->
+      <div style="padding:2rem;">
+
+        <!-- Steps indicator -->
+        <div class="steps" aria-label="Registration progress">
+          <div class="step done" aria-current="false">
+            <div class="step-circle"><i class="fa-solid fa-check" style="font-size:9px;" aria-hidden="true"></i></div>
+            <span>Account</span>
+          </div>
+          <div class="step-line" aria-hidden="true"></div>
+          <div class="step active" aria-current="step">
+            <div class="step-circle">2</div>
+            <span>Details</span>
+          </div>
+          <div class="step-line" aria-hidden="true"></div>
+          <div class="step" aria-current="false">
+            <div class="step-circle">3</div>
+            <span>Confirm</span>
+          </div>
+        </div>
+
+        <!-- Error Alert -->
+        <% if (error) { %>
+          <div class="alert alert-error animate-fade-in" role="alert" aria-live="polite" style="margin-bottom:1.5rem;">
+            <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+            <span><%= error %></span>
+          </div>
+        <% } %>
+
+        <!-- Register Form — action/method UNCHANGED -->
+        <form action="/auth/register" method="POST" class="auth-form" id="register-form" novalidate>
+
+          <!-- Username -->
+          <div class="form-group">
+            <label class="form-label-icon" for="reg-username">
+              <i class="fa-solid fa-at" style="color:var(--clr-primary);font-size:0.875rem;" aria-hidden="true"></i>
+              Username
+            </label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-at input-icon" aria-hidden="true"></i>
+              <input
+                id="reg-username"
+                type="text"
+                name="username"
+                class="form-input"
+                placeholder="yourhandle"
+                autocomplete="username"
+                required
+                aria-required="true"
+                oninput="validateUsername(this)"
+              >
+            </div>
+            <span class="form-hint">Letters, numbers, and underscores only.</span>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label-icon" for="reg-email">
+              <i class="fa-solid fa-envelope" style="color:var(--clr-primary);font-size:0.875rem;" aria-hidden="true"></i>
+              Email address
+            </label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i>
+              <input
+                id="reg-email"
+                type="email"
+                name="email"
+                class="form-input"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+                aria-required="true"
+              >
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label-icon" for="reg-password">
+              <i class="fa-solid fa-lock" style="color:var(--clr-primary);font-size:0.875rem;" aria-hidden="true"></i>
+              Password
+            </label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
+              <input
+                id="reg-password"
+                type="password"
+                name="password"
+                class="form-input"
+                placeholder="Min. 6 characters"
+                autocomplete="new-password"
+                required
+                aria-required="true"
+                minlength="6"
+                oninput="checkStrength(this.value)"
+              >
+              <button
+                type="button"
+                class="input-action"
+                aria-label="Toggle password visibility"
+                onclick="togglePwd('reg-password', this)"
+              >
+                <i class="fa-solid fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <!-- Strength bar -->
+            <div class="strength-bar" aria-label="Password strength indicator" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="strength-fill" id="strength-fill"></div>
+            </div>
+            <span class="form-hint" id="strength-label">Enter a password to see its strength</span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary btn-block" style="padding:0.875rem; margin-top:0.5rem;" id="register-submit-btn">
+            <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+            Create My Account
+          </button>
+
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer-link" style="margin-top:1.5rem;">
+          Already have an account?
+          <a href="/auth/login" id="register-login-link">Sign in</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Terms note -->
+    <p style="text-align:center; font-size:var(--fs-xs); color:var(--clr-text-light); margin-top:1.25rem; line-height:1.6;">
+      By creating an account, you agree to Inkwell's
+      <a href="/" style="color:var(--clr-primary); text-decoration:underline;">Terms of Service</a>
+      and
+      <a href="/" style="color:var(--clr-primary); text-decoration:underline;">Privacy Policy</a>.
+    </p>
+
+  </div>
+</div>
+
+<script>
+  // Password visibility toggle
+  function togglePwd(inputId, btn) {
+    var input = document.getElementById(inputId);
+    var icon  = btn.querySelector('i');
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.className = 'fa-solid fa-eye-slash';
+      btn.setAttribute('aria-label', 'Hide password');
+    } else {
+      input.type = 'password';
+      icon.className = 'fa-solid fa-eye';
+      btn.setAttribute('aria-label', 'Show password');
+    }
+  }
+
+  // Password strength checker
+  function checkStrength(val) {
+    var fill  = document.getElementById('strength-fill');
+    var label = document.getElementById('strength-label');
+    if (!fill || !label) return;
+
+    var score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    var levels = [
+      { w: '20%',  bg: '#EF4444', text: 'Very weak' },
+      { w: '40%',  bg: '#F59E0B', text: 'Weak' },
+      { w: '60%',  bg: '#F59E0B', text: 'Fair' },
+      { w: '80%',  bg: '#10B981', text: 'Strong' },
+      { w: '100%', bg: '#10B981', text: 'Very strong ✓' },
+    ];
+
+    if (val.length === 0) {
+      fill.style.width = '0%';
+      label.textContent = 'Enter a password to see its strength';
+      return;
+    }
+
+    var level = levels[Math.min(score - 1, 4)];
+    if (!level) level = levels[0];
+    fill.style.width = level.w;
+    fill.style.background = level.bg;
+    label.textContent = level.text;
+  }
+
+  // Username validation
+  function validateUsername(input) {
+    var val = input.value;
+    var valid = /^[a-zA-Z0-9_]*$/.test(val);
+    input.className = 'form-input' + (val.length > 0 ? (valid ? ' success' : ' error') : '');
+  }
+</script>
+
+</body>
+</html>

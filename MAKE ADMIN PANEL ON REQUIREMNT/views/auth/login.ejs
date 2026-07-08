@@ -1,0 +1,25 @@
+<!-- Login form for existing administrators to access the dashboard -->
+<h2 class="auth-title">Welcome back</h2>
+<p class="auth-subtitle">Sign in to your admin account</p>
+
+<!-- Authentication form for signing into the admin panel -->
+<form action="/auth/login" method="POST" class="nv-form" data-loading>
+  <div class="form-floating mb-3">
+    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+    <label for="email"><i class="bi bi-envelope me-2"></i>Email address</label>
+  </div>
+  <div class="form-floating mb-4">
+    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+    <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+  </div>
+  <button type="submit" class="btn btn-primary w-100 nv-btn">
+    <span class="btn-text">Sign In</span>
+    <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+  </button>
+</form>
+
+<div class="auth-links">
+  <a href="/auth/forgot-password">Forgot password?</a>
+  <span class="divider">|</span>
+  <a href="/auth/signup">Create account</a>
+</div>

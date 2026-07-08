@@ -1,0 +1,197 @@
+/* ── VELURA Themed Loader Styles ───────────────────────────────────── */
+
+.jc-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  transition: all 0.4s ease;
+}
+
+/* Full-page overlays */
+.jc-loader-container.is-full-page {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+}
+
+/* Dark theme */
+.jc-loader-container.theme-dark {
+  background: var(--color-velura-950);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(201, 168, 76, 0.08), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(17, 17, 16, 0.95), transparent 75%);
+  color: #ffffff;
+}
+
+/* Light theme */
+.jc-loader-container.theme-light {
+  background: transparent;
+  color: var(--color-gold-500);
+}
+.jc-loader-container.theme-light.is-full-page {
+  background: var(--color-velura-50);
+}
+
+/* Spinner Inner Rings */
+.jc-loader-container.theme-light .jc-loader-inner-ring,
+.jc-loader-container.theme-light .jc-loader-core {
+  display: none;
+}
+
+.jc-loader-container.theme-light .jc-loader-outer-ring {
+  border: 3px solid rgba(201, 168, 76, 0.15);
+  border-top-color: var(--color-gold-500);
+  border-bottom-color: rgba(201, 168, 76, 0.15);
+  border-radius: 50%;
+  animation: jcLoaderSpinClockwise 0.8s linear infinite;
+}
+
+.jc-loader-container.theme-light .jc-loader-ring-wrapper.size-sm .jc-loader-outer-ring {
+  border-width: 2px;
+}
+
+.jc-loader-container.theme-light .jc-loader-ring-wrapper.size-md .jc-loader-outer-ring {
+  border-width: 3px;
+}
+
+.jc-loader-container.theme-light .jc-loader-ring-wrapper.size-lg .jc-loader-outer-ring {
+  border-width: 4px;
+}
+
+.jc-loader-container.theme-light .jc-loader-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--color-gold-600);
+  opacity: 0.8;
+}
+
+/* ── Concentric Spinner Rings ── */
+.jc-loader-ring-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Outer Ring - Clockwise gold sweep */
+.jc-loader-outer-ring {
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-top-color: var(--color-gold-500);
+  border-bottom-color: var(--color-gold-500);
+  border-radius: 50%;
+  animation: jcLoaderSpinClockwise 1.2s cubic-bezier(0.4, 0.1, 0.3, 0.9) infinite;
+}
+
+/* Inner Ring */
+.jc-loader-inner-ring {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-left-color: rgba(201, 168, 76, 0.5);
+  border-right-color: rgba(201, 168, 76, 0.5);
+  border-radius: 50%;
+  animation: jcLoaderSpinCounter 1s linear infinite;
+}
+
+/* Glowing Pulsing Core */
+.jc-loader-core {
+  position: absolute;
+  background-color: var(--color-gold-500);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.6);
+  animation: jcLoaderPulse 1.5s ease-in-out infinite alternate;
+}
+
+/* Sizes */
+.jc-loader-ring-wrapper.size-sm .jc-loader-outer-ring {
+  width: 32px;
+  height: 32px;
+}
+.jc-loader-ring-wrapper.size-sm .jc-loader-inner-ring {
+  width: 22px;
+  height: 22px;
+}
+.jc-loader-ring-wrapper.size-sm .jc-loader-core {
+  width: 8px;
+  height: 8px;
+  box-shadow: 0 0 6px rgba(201, 168, 76, 0.5);
+}
+
+.jc-loader-ring-wrapper.size-md .jc-loader-outer-ring {
+  width: 56px;
+  height: 56px;
+  border-width: 2px;
+}
+.jc-loader-ring-wrapper.size-md .jc-loader-inner-ring {
+  width: 40px;
+  height: 40px;
+  border-width: 2px;
+}
+.jc-loader-ring-wrapper.size-md .jc-loader-core {
+  width: 14px;
+  height: 14px;
+}
+
+.jc-loader-ring-wrapper.size-lg .jc-loader-outer-ring {
+  width: 80px;
+  height: 80px;
+  border-width: 3px;
+}
+.jc-loader-ring-wrapper.size-lg .jc-loader-inner-ring {
+  width: 58px;
+  height: 58px;
+  border-width: 2.5px;
+}
+.jc-loader-ring-wrapper.size-lg .jc-loader-core {
+  width: 22px;
+  height: 22px;
+  box-shadow: 0 0 18px rgba(201, 168, 76, 0.7);
+}
+
+/* Custom Loader Text */
+.jc-loader-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-gold-500);
+  text-align: center;
+  animation: jcLoaderTextPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes jcLoaderSpinClockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes jcLoaderSpinCounter {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes jcLoaderPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 6px rgba(201, 168, 76, 0.4);
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 1;
+    box-shadow: 0 0 16px rgba(201, 168, 76, 0.85);
+  }
+}
+
+@keyframes jcLoaderTextPulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}

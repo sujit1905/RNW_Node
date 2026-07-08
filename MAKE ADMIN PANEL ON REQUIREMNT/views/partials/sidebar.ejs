@@ -1,0 +1,50 @@
+<!-- Sidebar navigation for the admin dashboard -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo"><i class="bi bi-hexagon-fill"></i></div>
+    <span class="brand-text"><%= appName %></span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <p class="nav-label">Main</p>
+    <a href="/admin/dashboard" class="nav-link <%= currentPath === '/admin/dashboard' ? 'active' : '' %>">
+      <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
+    </a>
+
+    <p class="nav-label">Catalog</p>
+    <a href="/admin/categories" class="nav-link <%= currentPath.startsWith('/admin/categories') ? 'active' : '' %>">
+      <i class="bi bi-folder2-open"></i><span>Categories</span>
+    </a>
+    <a href="/admin/subcategories" class="nav-link <%= currentPath.startsWith('/admin/subcategories') ? 'active' : '' %>">
+      <i class="bi bi-diagram-2"></i><span>Subcategories</span>
+    </a>
+    <a href="/admin/extra-categories" class="nav-link <%= currentPath.startsWith('/admin/extra-categories') ? 'active' : '' %>">
+      <i class="bi bi-layers"></i><span>Extra Categories</span>
+    </a>
+    <a href="/admin/products" class="nav-link <%= currentPath.startsWith('/admin/products') ? 'active' : '' %>">
+      <i class="bi bi-box-seam"></i><span>Products</span>
+    </a>
+
+    <p class="nav-label">Account</p>
+    <a href="/admin/profile" class="nav-link <%= currentPath === '/admin/profile' ? 'active' : '' %>">
+      <i class="bi bi-person-circle"></i><span>Profile</span>
+    </a>
+    <a href="/auth/logout" class="nav-link nav-link-danger">
+      <i class="bi bi-box-arrow-left"></i><span>Logout</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <% if (currentUser && currentUser.avatar) { %>
+        <img src="<%= currentUser.avatar %>" alt="Avatar" class="user-avatar">
+      <% } else { %>
+        <div class="user-avatar-placeholder"><%= currentUser ? currentUser.fullName.charAt(0).toUpperCase() : 'A' %></div>
+      <% } %>
+      <div class="user-info">
+        <span class="user-name"><%= currentUser ? currentUser.fullName : 'Admin' %></span>
+        <span class="user-role">Administrator</span>
+      </div>
+    </div>
+  </div>
+</aside>

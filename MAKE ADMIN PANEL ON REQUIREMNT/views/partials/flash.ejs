@@ -1,0 +1,18 @@
+<% // Show success and error flash messages returned from the server. %>
+<% if (success && success.length) { %>
+  <% success.forEach(function(msg) { %>
+    <div class="alert alert-success alert-dismissible fade show nv-alert" role="alert">
+      <i class="bi bi-check-circle-fill me-2"></i><%= msg %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% }); %>
+<% } %>
+
+<% if (error && error.length) { %>
+  <% error.forEach(function(msg) { %>
+    <div class="alert alert-danger alert-dismissible fade show nv-alert" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i><%= msg %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% }); %>
+<% } %>

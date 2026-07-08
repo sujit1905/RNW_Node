@@ -1,0 +1,72 @@
+<div class="container py-5">
+    <div class="row">
+        <!-- Profile Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm text-center p-4 profile-card">
+                <div class="card-body">
+                    <div class="profile-avatar-wrapper mb-3">
+                        <img src="<%= user.profileImage %>" alt="<%= user.username %>" class="rounded-circle img-thumbnail shadow-sm" width="120" height="120" style="object-fit: cover;">
+                    </div>
+                    <h4 class="fw-bold mb-1"><%= user.getFullName ? user.getFullName() : (user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : user.username) %></h4>
+                    <p class="text-muted mb-3">@<%= user.username %></p>
+                    
+                    <div class="d-flex justify-content-center gap-2 mb-4">
+                        <span class="badge bg-light text-dark px-3 py-2 border">
+                            <i class="fas fa-calendar-alt me-1 text-primary"></i> Joined <%= new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short' }) %>
+                        </span>
+                    </div>
+
+                    <div class="border-top pt-3 text-start">
+                        <h6 class="fw-bold mb-2">Account Details</h6>
+                        <p class="mb-1 small"><strong class="text-muted">Email:</strong> <%= user.email %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold mb-4"><i class="fas fa-sliders text-primary me-2"></i>Profile Settings</h3>
+
+                    <% if (locals.success) { %>
+                        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                            <i class="fas fa-check-circle me-2"></i><%= success %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <% if (locals.error) { %>
+                        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i><%= error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <form action="/auth/profile/update" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label fw-bold small text-muted text-uppercase">First Name</label>
+                                <input type="text" class="form-control form-control-lg border-2" id="firstName" name="firstName" value="<%= user.firstName %>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label fw-bold small text-muted text-uppercase">Last Name</label>
+                                <input type="text" class="form-control form-control-lg border-2" id="lastName" name="lastName" value="<%= user.lastName %>">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="bio" class="form-label fw-bold small text-muted text-uppercase">About Me (Bio)</label>
+                            <textarea class="form-control border-2" id="bio" name="bio" rows="4" placeholder="Share a little bit about yourself..."><%= user.bio %></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                            Save Changes <i class="fas fa-save ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

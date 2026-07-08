@@ -1,0 +1,86 @@
+<% // Form for adding a new product to the catalog. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Products', url: '/admin/products' }, { label: 'Add New' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Add Product</h1>
+    <p class="page-desc">Create a new product listing</p>
+  </div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <!-- Product creation form with category dependency dropdowns -->
+  <form action="/admin/products" method="POST" enctype="multipart/form-data" class="nv-form" data-loading data-cascade data-product>
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label">Product Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control nv-input" name="name" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">SKU</label>
+            <input type="text" class="form-control nv-input" name="sku" placeholder="Optional">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Price <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control nv-input" name="price" step="0.01" min="0" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Stock</label>
+            <input type="number" class="form-control nv-input" name="stock" min="0" value="0">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Status</label>
+            <select class="form-select nv-input" name="isActive">
+              <option value="true" selected>Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Category <span class="text-danger">*</span></label>
+            <select class="form-select nv-input" name="category" id="categorySelect" required>
+              <option value="">Select category</option>
+              <% categories.forEach(function(c) { %>
+                <option value="<%= c._id %>"><%= c.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Subcategory <span class="text-danger">*</span></label>
+            <select class="form-select nv-input" name="subcategory" id="subcategorySelect" required disabled>
+              <option value="">Select subcategory</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Extra Category <span class="text-danger">*</span></label>
+            <select class="form-select nv-input" name="extraCategory" id="extraCategorySelect" required disabled>
+              <option value="">Select extra category</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control nv-input" name="description" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <label class="form-label">Product Image</label>
+        <div class="image-upload-box">
+          <img src="/images/placeholder.svg" alt="Preview" class="image-preview" id="productPreview">
+          <input type="file" class="form-control nv-input mt-3" name="image" accept="image/*" data-preview="#productPreview">
+          <small class="text-muted d-block mt-2">JPG, PNG, WebP up to 5MB</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/products" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn"><span class="btn-text">Save Product</span><span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span></button>
+    </div>
+  </form>
+</div>

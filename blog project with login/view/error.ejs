@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Error' %> | Inkwell</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M8 22 L14 8 L18 16 L22 10 L26 22' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='22' cy='22' r='3' fill='%2306B6D4'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Inkwell Design System -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body>
+
+<div class="error-page" role="main">
+  <div class="error-page__inner">
+
+    <!-- Animated gradient number -->
+    <div class="error-number" aria-label="Error 404">404</div>
+
+    <!-- Illustration icon -->
+    <div style="margin-bottom:var(--sp-6); font-size:3rem; animation:float 4s ease-in-out infinite;" aria-hidden="true">
+      🌊
+    </div>
+
+    <h1 class="error-title">
+      <%= typeof message !== 'undefined' ? message : 'Page Not Found' %>
+    </h1>
+
+    <p class="error-text">
+      The page you're looking for seems to have drifted away on the ink tide. It may have been moved, deleted, or never existed at all.
+    </p>
+
+    <!-- Actions -->
+    <div style="display:flex; gap:var(--sp-4); justify-content:center; flex-wrap:wrap;">
+      <a href="/" class="btn btn-primary btn-lg" id="error-home-btn">
+        <i class="fa-solid fa-house" aria-hidden="true"></i>
+        Return to Inkwell
+      </a>
+      <button
+        type="button"
+        class="btn btn-ghost btn-lg"
+        id="error-back-btn"
+        onclick="history.back()"
+      >
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Go Back
+      </button>
+    </div>
+
+    <!-- Helpful links -->
+    <div style="margin-top:var(--sp-10); padding-top:var(--sp-6); border-top:1px solid var(--clr-border);">
+      <p style="font-size:var(--fs-sm); color:var(--clr-text-muted); margin-bottom:var(--sp-4);">
+        You might be looking for:
+      </p>
+      <div style="display:flex; gap:var(--sp-4); justify-content:center; flex-wrap:wrap;">
+        <a href="/" style="font-size:var(--fs-sm); color:var(--clr-primary); font-weight:600; text-decoration:none; transition:var(--transition-fast);" id="error-latest-link">
+          <i class="fa-solid fa-fire" aria-hidden="true" style="margin-right:4px;"></i>Latest Stories
+        </a>
+        <a href="/auth/login" style="font-size:var(--fs-sm); color:var(--clr-primary); font-weight:600; text-decoration:none; transition:var(--transition-fast);" id="error-login-link">
+          <i class="fa-solid fa-right-to-bracket" aria-hidden="true" style="margin-right:4px;"></i>Sign In
+        </a>
+        <a href="/auth/register" style="font-size:var(--fs-sm); color:var(--clr-primary); font-weight:600; text-decoration:none; transition:var(--transition-fast);" id="error-register-link">
+          <i class="fa-solid fa-user-plus" aria-hidden="true" style="margin-right:4px;"></i>Create Account
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand footer -->
+    <div style="margin-top:var(--sp-10);">
+      <a href="/" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;" aria-label="Inkwell home">
+        <div style="width:28px;height:28px;background:linear-gradient(135deg,#4F46E5,#8B5CF6);border-radius:6px;display:flex;align-items:center;justify-content:center;" aria-hidden="true">
+          <i class="fa-solid fa-feather-pointed" style="color:white;font-size:12px;"></i>
+        </div>
+        <span style="font-family:var(--font-heading);font-size:1rem;font-weight:800;background:linear-gradient(135deg,#4F46E5,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Inkwell</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<% // Form for creating a new subcategory under a selected category. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Subcategories', url: '/admin/subcategories' }, { label: 'Add New' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Add Subcategory</h1>
+    <p class="page-desc">Link a subcategory to a parent category</p>
+  </div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <form action="/admin/subcategories" method="POST" class="nv-form" data-loading>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Subcategory Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control nv-input" name="name" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Parent Category <span class="text-danger">*</span></label>
+        <select class="form-select nv-input" name="category" required>
+          <option value="">Select category</option>
+          <% categories.forEach(function(c) { %>
+            <option value="<%= c._id %>"><%= c.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Status</label>
+        <select class="form-select nv-input" name="isActive">
+          <option value="true" selected>Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control nv-input" name="description" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/subcategories" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn"><span class="btn-text">Save</span><span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span></button>
+    </div>
+  </form>
+</div>

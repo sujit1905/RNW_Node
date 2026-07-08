@@ -1,0 +1,38 @@
+<% // Detailed view page for an individual product record. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Products', url: '/admin/products' }, { label: product.name }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div><h1 class="page-title"><%= product.name %></h1></div>
+  <div class="d-flex gap-2">
+    <a href="/admin/products/<%= product._id %>/edit" class="btn btn-outline-light"><i class="bi bi-pencil me-1"></i>Edit</a>
+    <form action="/admin/products/<%= product._id %>?_method=DELETE" method="POST" data-confirm="Delete this product and its image?">
+      <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="nv-card product-view-image">
+      <img src="<%= product.image || '/images/placeholder.svg' %>" alt="<%= product.name %>" class="w-100 rounded">
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="nv-card">
+      <div class="detail-grid">
+        <div class="detail-item"><span class="detail-label">Price</span><span class="detail-value product-price">$<%= product.price.toFixed(2) %></span></div>
+        <div class="detail-item"><span class="detail-label">Stock</span><span class="detail-value"><span class="badge <%= product.stock <= 5 ? 'bg-danger' : 'bg-success' %>"><%= product.stock %> units</span></span></div>
+        <div class="detail-item"><span class="detail-label">SKU</span><span class="detail-value"><%= product.sku || '—' %></span></div>
+        <div class="detail-item"><span class="detail-label">Status</span><span class="detail-value"><span class="badge <%= product.isActive ? 'bg-success' : 'bg-secondary' %>"><%= product.isActive ? 'Active' : 'Inactive' %></span></span></div>
+        <div class="detail-item"><span class="detail-label">Category</span><span class="detail-value"><%= product.category ? product.category.name : '—' %></span></div>
+        <div class="detail-item"><span class="detail-label">Subcategory</span><span class="detail-value"><%= product.subcategory ? product.subcategory.name : '—' %></span></div>
+        <div class="detail-item"><span class="detail-label">Extra Category</span><span class="detail-value"><%= product.extraCategory ? product.extraCategory.name : '—' %></span></div>
+        <div class="detail-item"><span class="detail-label">Created By</span><span class="detail-value"><%= product.createdBy ? product.createdBy.fullName : '—' %></span></div>
+        <div class="detail-item"><span class="detail-label">Created</span><span class="detail-value"><%= new Date(product.createdAt).toLocaleString() %></span></div>
+        <div class="detail-item detail-item-full"><span class="detail-label">Description</span><span class="detail-value"><%= product.description || 'No description' %></span></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<% // Form used to update an existing subcategory entry. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Subcategories', url: '/admin/subcategories' }, { label: 'Edit' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Edit Subcategory</h1>
+  </div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <form action="/admin/subcategories/<%= subcategory._id %>?_method=PUT" method="POST" class="nv-form" data-loading>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Subcategory Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control nv-input" name="name" value="<%= subcategory.name %>" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Parent Category <span class="text-danger">*</span></label>
+        <select class="form-select nv-input" name="category" required>
+          <% categories.forEach(function(c) { %>
+            <option value="<%= c._id %>" <%= String(subcategory.category) === String(c._id) ? 'selected' : '' %>><%= c.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Status</label>
+        <select class="form-select nv-input" name="isActive">
+          <option value="true" <%= subcategory.isActive ? 'selected' : '' %>>Active</option>
+          <option value="false" <%= !subcategory.isActive ? 'selected' : '' %>>Inactive</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control nv-input" name="description" rows="3"><%= subcategory.description || '' %></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/subcategories" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn"><span class="btn-text">Update</span><span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span></button>
+    </div>
+  </form>
+</div>

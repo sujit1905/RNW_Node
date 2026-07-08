@@ -1,0 +1,150 @@
+<div class="hero-section text-white text-center py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">Welcome to MyBlog</h1>
+        <p class="lead mb-4">Discover amazing stories and insights from writers around the world</p>
+        <% if (!user) { %>
+            <a href="/auth/register" class="btn btn-light btn-lg me-2">Get Started</a>
+            <a href="/auth/login" class="btn btn-outline-light btn-lg">Sign In</a>
+        <% } else { %>
+            <a href="/blog/create" class="btn btn-light btn-lg me-2">
+                <i class="fas fa-pen-to-square me-2"></i>Write a Post
+            </a>
+        <% } %>
+    </div>
+</div>
+
+<!-- Search and Filter Section -->
+<div class="bg-white py-3 border-bottom shadow-sm">
+    <div class="container">
+        <form method="GET" action="/blog" class="row g-2 justify-content-center align-items-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 border-2 py-2">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        class="form-control border-start-0 border-2 ps-0 py-2" 
+                        placeholder="Search posts by title or excerpt..." 
+                        name="search"
+                        value="<%= search %>"
+                    >
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select border-2 py-2" name="category" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    <% categories.forEach(cat => { %>
+                        <option value="<%= cat %>" <%= category === cat ? 'selected' : '' %>>
+                            <%= cat %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="col-md-2 col-6">
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                    Filter <i class="fas fa-filter ms-1"></i>
+                </button>
+            </div>
+            <% if (search || category) { %>
+                <div class="col-md-2 col-6">
+                    <a href="/blog" class="btn btn-outline-secondary w-100 py-2 fw-semibold">
+                        Clear <i class="fas fa-times ms-1"></i>
+                    </a>
+                </div>
+            <% } %>
+        </form>
+    </div>
+</div>
+
+<!-- Blog Posts Grid -->
+<div class="container py-5">
+    <% if (posts.length === 0) { %>
+        <div class="text-center py-5">
+            <i class="fas fa-inbox mb-3" style="font-size: 3.5rem; color: #cbd5e1;"></i>
+            <h3 class="fw-bold text-muted">No posts found</h3>
+            <p class="text-muted">Try adjusting your filters or search keywords</p>
+            <% if (search || category) { %>
+                <a href="/blog" class="btn btn-primary mt-2">View All Posts</a>
+            <% } %>
+        </div>
+    <% } else { %>
+        <div class="row g-4">
+            <% posts.forEach(post => { %>
+                <div class="col-md-6 col-lg-4">
+                    <article class="card h-100 blog-card hover-card">
+                        <div class="blog-card-img-wrapper">
+                            <span class="blog-card-badge"><%= post.category %></span>
+                            <span class="blog-card-views">
+                                <i class="fas fa-eye me-1"></i><%= post.views %>
+                            </span>
+                            <img src="<%= post.featuredImage %>" class="blog-card-img" alt="<%= post.title %>" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <h4 class="blog-card-title">
+                                <a href="/blog/post/<%= post.slug %>" class="text-decoration-none text-dark"><%= post.title %></a>
+                            </h4>
+                            <p class="blog-card-excerpt">
+                                <%= post.excerpt || post.content.replace(/<[^>]*>/g, '').substring(0, 110) %>...
+                            </p>
+                            
+                            <div class="blog-card-footer">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="<%= post.author.profileImage %>" alt="<%= post.author.username %>" class="blog-card-author-img border shadow-sm">
+                                        <div>
+                                            <div class="fw-bold small text-dark"><%= post.author.username %></div>
+                                            <div class="text-muted small" style="font-size: 0.75rem;">
+                                                <%= new Date(post.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="/blog/post/<%= post.slug %>" class="blog-card-read-link text-decoration-none fw-bold small text-primary">
+                                        Read <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+            <nav aria-label="Page navigation" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <% if (currentPage > 1) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="/blog?page=1<%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/blog?page=<%= currentPage - 1 %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>">Previous</a>
+                        </li>
+                    <% } %>
+
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <% if (i === currentPage) { %>
+                            <li class="page-item active">
+                                <span class="page-link"><%= i %></span>
+                            </li>
+                        <% } else if (i >= currentPage - 1 && i <= currentPage + 1) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/blog?page=<%= i %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>"><%= i %></a>
+                            </li>
+                        <% } %>
+                    <% } %>
+
+                    <% if (currentPage < totalPages) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="/blog?page=<%= currentPage + 1 %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/blog?page=<%= totalPages %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>">Last</a>
+                        </li>
+                    <% } %>
+                </ul>
+            </nav>
+        <% } %>
+    <% } %>
+</div>

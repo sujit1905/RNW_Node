@@ -1,0 +1,18 @@
+<!-- Top header bar shown across admin pages -->
+<header class="top-header">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+    <i class="bi bi-list"></i>
+  </button>
+  <div class="header-search d-none d-md-flex">
+    <i class="bi bi-search"></i>
+    <input type="text" placeholder="Quick search..." id="globalSearch" disabled>
+  </div>
+  <div class="header-actions">
+    <a href="/admin/profile" class="header-btn" data-bs-toggle="tooltip" title="Profile">
+      <i class="bi bi-person"></i>
+    </a>
+    <a href="/auth/logout" class="header-btn header-btn-danger" data-bs-toggle="tooltip" title="Logout">
+      <i class="bi bi-power"></i>
+    </a>
+  </div>
+</header>

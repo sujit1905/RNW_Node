@@ -1,0 +1,69 @@
+<% // Main listing page for subcategories with search, filter, and pagination. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Subcategories' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Subcategories</h1>
+    <p class="page-desc">Manage subcategories linked to categories</p>
+  </div>
+  <a href="/admin/subcategories/create" class="btn btn-primary nv-btn"><i class="bi bi-plus-lg me-1"></i>Add Subcategory</a>
+</div>
+
+<div class="nv-card">
+  <div class="nv-card-header">
+    <form action="/admin/subcategories" method="GET" class="search-form">
+      <div class="search-input-wrap">
+        <i class="bi bi-search"></i>
+        <input type="text" name="search" class="form-control nv-input" placeholder="Search..." value="<%= search %>">
+      </div>
+      <select name="category" class="form-select nv-input filter-select">
+        <option value="">All Categories</option>
+        <% categories.forEach(function(c) { %>
+          <option value="<%= c._id %>" <%= catFilter === String(c._id) ? 'selected' : '' %>><%= c.name %></option>
+        <% }); %>
+      </select>
+      <button type="submit" class="btn btn-outline-light btn-sm">Filter</button>
+    </form>
+  </div>
+  <div class="table-responsive">
+    <table class="table nv-table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (subcategories.length) { %>
+          <% subcategories.forEach(function(item, i) { %>
+            <tr>
+              <td><%= (pagination.currentPage - 1) * 10 + i + 1 %></td>
+              <td><a href="/admin/subcategories/<%= item._id %>" class="table-link" style="color: rgb(53, 15, 205);"><%= item.name %></a></td>
+              <td><%= item.category ? item.category.name : '—' %></td>
+              <td><span class="badge <%= item.isActive ? 'bg-success' : 'bg-secondary' %>"><%= item.isActive ? 'Active' : 'Inactive' %></span></td>
+              <td><%= new Date(item.createdAt).toLocaleDateString() %></td>
+              <td class="text-end">
+                <div class="action-btns">
+                  <a href="/admin/subcategories/<%= item._id %>" class="action-btn"><i class="bi bi-eye"></i></a>
+                  <a href="/admin/subcategories/<%= item._id %>/edit" class="action-btn"><i class="bi bi-pencil"></i></a>
+                  <form action="/admin/subcategories/<%= item._id %>?_method=DELETE" method="POST" class="d-inline" data-confirm="Delete this subcategory?">
+                    <button type="submit" class="action-btn action-btn-danger"><i class="bi bi-trash"></i></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr><td colspan="6" class="text-center text-muted py-5">No subcategories found</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+  <div class="nv-card-footer"><%- include('../../partials/pagination', { pagination }) %></div>
+</div>

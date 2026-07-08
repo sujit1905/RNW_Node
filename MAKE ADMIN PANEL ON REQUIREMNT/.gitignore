@@ -1,0 +1,7 @@
+node_modules/
+.env
+uploads/*
+!uploads/.gitkeep
+public/images/products/*
+!public/images/placeholder.png
+.DS_Store

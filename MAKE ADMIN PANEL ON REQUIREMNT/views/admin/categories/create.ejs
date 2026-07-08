@@ -1,0 +1,41 @@
+<% // Form for creating a new category in the catalog. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Categories', url: '/admin/categories' }, { label: 'Add New' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Add Category</h1>
+    <p class="page-desc">Create a new product category</p>
+  </div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <!-- Form for creating a new product category -->
+  <form action="/admin/categories" method="POST" class="nv-form" data-loading>
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label">Category Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control nv-input" name="name" placeholder="e.g. Electronics" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Status</label>
+        <select class="form-select nv-input" name="isActive">
+          <option value="true" selected>Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control nv-input" name="description" rows="3" placeholder="Optional description"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/categories" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn">
+        <span class="btn-text">Save Category</span>
+        <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+      </button>
+    </div>
+  </form>
+</div>

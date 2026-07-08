@@ -1,0 +1,231 @@
+<%- include('../partials/header') %>
+
+<!-- ══════════════════════════════════════════════════════════
+     CREATE BLOG PAGE — Modern Editor Layout
+══════════════════════════════════════════════════════════ -->
+<div class="create-layout">
+
+  <!-- Page Header -->
+  <header class="create-header animate-fade-in-up">
+    <div class="create-header__eyebrow">
+      <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+      New Story
+    </div>
+    <h1 class="create-header__title">Write & Publish</h1>
+    <p class="create-header__subtitle">Share your ideas, stories, and insights with the Inkwell community.</p>
+  </header>
+
+  <!-- Error Alert -->
+  <% if (error) { %>
+    <div class="alert alert-error animate-fade-in" role="alert" aria-live="polite" style="margin-bottom:var(--sp-6);">
+      <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+      <span><%= error %></span>
+    </div>
+  <% } %>
+
+  <!-- ── Form — action/method UNCHANGED ── -->
+  <form action="/blog" method="POST" id="create-blog-form" novalidate>
+
+    <!-- Card 1: Article Identity -->
+    <div class="create-card animate-fade-in-up delay-1">
+      <div class="create-card__title">
+        <div class="create-card__title-icon" aria-hidden="true">
+          <i class="fa-solid fa-heading"></i>
+        </div>
+        Article Identity
+      </div>
+
+      <!-- Title -->
+      <div class="form-group" style="margin-bottom:var(--sp-5);">
+        <label class="form-label" for="blog-title">
+          Post Title <span style="color:var(--clr-error)" aria-hidden="true">*</span>
+        </label>
+        <input
+          id="blog-title"
+          type="text"
+          name="title"
+          class="form-input"
+          placeholder="Write a compelling title…"
+          required
+          aria-required="true"
+          style="font-family:var(--font-heading); font-size:var(--fs-xl); font-weight:700; letter-spacing:-0.02em;"
+          oninput="updateCharCount(this, 'title-count', 120)"
+        >
+        <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+          <span id="title-count" style="font-size:var(--fs-xs); color:var(--clr-text-muted);">0 / 120</span>
+        </div>
+      </div>
+
+      <!-- Category + Image URL in a 2-col grid -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-5);">
+
+        <!-- Category -->
+        <div class="form-group">
+          <label class="form-label-icon" for="blog-category">
+            <i class="fa-solid fa-tag" style="color:var(--clr-primary);font-size:0.75rem;" aria-hidden="true"></i>
+            Category <span style="color:var(--clr-error)" aria-hidden="true">*</span>
+          </label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-tag input-icon" aria-hidden="true"></i>
+            <input
+              id="blog-category"
+              type="text"
+              name="category"
+              class="form-input"
+              placeholder="e.g. Technology, Design…"
+              required
+              aria-required="true"
+            >
+          </div>
+        </div>
+
+        <!-- Cover Image URL -->
+        <div class="form-group">
+          <label class="form-label-icon" for="blog-images">
+            <i class="fa-solid fa-image" style="color:var(--clr-primary);font-size:0.75rem;" aria-hidden="true"></i>
+            Cover Image URL
+          </label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-link input-icon" aria-hidden="true"></i>
+            <input
+              id="blog-images"
+              type="url"
+              name="images"
+              class="form-input"
+              placeholder="https://…"
+              oninput="previewImage(this.value)"
+            >
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Card 2: Cover Image Preview -->
+    <div class="create-card animate-fade-in-up delay-2">
+      <div class="create-card__title">
+        <div class="create-card__title-icon" aria-hidden="true">
+          <i class="fa-solid fa-image"></i>
+        </div>
+        Cover Image Preview
+      </div>
+
+      <div class="image-preview-box" id="image-preview-box" aria-label="Image preview">
+        <img id="preview-img" src="" alt="Cover image preview">
+        <div class="image-preview-placeholder" aria-hidden="true">
+          <i class="fa-solid fa-image"></i>
+          <p style="font-weight:600; color:var(--clr-text-muted);">Image preview will appear here</p>
+          <p style="font-size:var(--fs-xs); color:var(--clr-text-light);">Paste a valid image URL above</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Content Editor -->
+    <div class="create-card animate-fade-in-up delay-3">
+      <div class="create-card__title">
+        <div class="create-card__title-icon" aria-hidden="true">
+          <i class="fa-solid fa-align-left"></i>
+        </div>
+        Article Content
+      </div>
+
+      <!-- Mini toolbar (UI only) -->
+      <div style="display:flex; gap:6px; margin-bottom:var(--sp-4); padding-bottom:var(--sp-3); border-bottom:1px solid var(--clr-border); flex-wrap:wrap;" role="toolbar" aria-label="Formatting toolbar">
+        <button type="button" class="btn-icon" title="Bold" aria-label="Bold">
+          <i class="fa-solid fa-bold" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-icon" title="Italic" aria-label="Italic">
+          <i class="fa-solid fa-italic" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-icon" title="Underline" aria-label="Underline">
+          <i class="fa-solid fa-underline" aria-hidden="true"></i>
+        </button>
+        <div style="width:1px; height:24px; background:var(--clr-border); align-self:center; margin:0 4px;" aria-hidden="true"></div>
+        <button type="button" class="btn-icon" title="Heading" aria-label="Heading">
+          <i class="fa-solid fa-heading" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-icon" title="Quote" aria-label="Block quote">
+          <i class="fa-solid fa-quote-left" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-icon" title="Bullet list" aria-label="Bullet list">
+          <i class="fa-solid fa-list-ul" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-icon" title="Code block" aria-label="Code block">
+          <i class="fa-solid fa-code" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-icon" title="Link" aria-label="Insert link">
+          <i class="fa-solid fa-link" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="blog-content">
+          Write your story <span style="color:var(--clr-error)" aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="blog-content"
+          name="content"
+          class="form-textarea"
+          placeholder="Start writing your story here…&#10;&#10;Share your ideas, experiences, knowledge, or anything that will captivate your readers."
+          required
+          aria-required="true"
+          style="min-height:380px; font-size:var(--fs-lg); line-height:1.85; resize:vertical;"
+          oninput="updateWordCount(this)"
+        ></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+          <span class="form-hint">Use clear, engaging language. Tell a story.</span>
+          <span id="word-count" style="font-size:var(--fs-xs); color:var(--clr-text-muted);">0 words</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="create-actions animate-fade-in-up delay-4">
+      <button type="submit" class="btn btn-primary btn-lg" style="flex:1;" id="publish-btn">
+        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+        Publish Story
+      </button>
+      <a href="/" class="btn btn-ghost btn-lg" id="cancel-create-btn" style="white-space:nowrap;">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        Cancel
+      </a>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+  // Live image preview
+  function previewImage(url) {
+    var box = document.getElementById('image-preview-box');
+    var img = document.getElementById('preview-img');
+    if (!url || url.trim() === '') {
+      box.classList.remove('has-image');
+      img.src = '';
+      return;
+    }
+    img.onload = function() { box.classList.add('has-image'); };
+    img.onerror = function() { box.classList.remove('has-image'); };
+    img.src = url;
+  }
+
+  // Character counter
+  function updateCharCount(input, countId, max) {
+    var el = document.getElementById(countId);
+    if (el) el.textContent = input.value.length + ' / ' + max;
+    if (input.value.length > max) el.style.color = 'var(--clr-error)';
+    else el.style.color = 'var(--clr-text-muted)';
+  }
+
+  // Word counter
+  function updateWordCount(textarea) {
+    var el = document.getElementById('word-count');
+    if (!el) return;
+    var words = textarea.value.trim().split(/\s+/).filter(Boolean).length;
+    var readTime = Math.ceil(words / 200) || 0;
+    el.textContent = words + ' words · ~' + readTime + ' min read';
+  }
+</script>
+
+<%- include('../partials/footer') %>

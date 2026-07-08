@@ -1,0 +1,80 @@
+<% // Product management list page with search, sorting, and pagination. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Products' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Products</h1>
+    <p class="page-desc">Manage your product catalog</p>
+  </div>
+  <a href="/admin/products/create" class="btn btn-primary nv-btn"><i class="bi bi-plus-lg me-1"></i>Add Product</a>
+</div>
+
+<div class="nv-card">
+  <div class="nv-card-header">
+    <form action="/admin/products" method="GET" class="search-form">
+      <div class="search-input-wrap">
+        <i class="bi bi-search"></i>
+        <input type="text" name="search" class="form-control nv-input" placeholder="Search products..." value="<%= search %>">
+      </div>
+      <select name="sort" class="form-select nv-input filter-select">
+        <option value="newest" <%= sort === 'newest' ? 'selected' : '' %>>Newest</option>
+        <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>Oldest</option>
+        <option value="price_asc" <%= sort === 'price_asc' ? 'selected' : '' %>>Price: Low to High</option>
+        <option value="price_desc" <%= sort === 'price_desc' ? 'selected' : '' %>>Price: High to Low</option>
+        <option value="name" <%= sort === 'name' ? 'selected' : '' %>>Name A-Z</option>
+      </select>
+      <button type="submit" class="btn btn-outline-light btn-sm">Apply</button>
+    </form>
+  </div>
+  <div class="table-responsive">
+    <table class="table nv-table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (products.length) { %>
+          <% products.forEach(function(p, i) { %>
+            <tr>
+              <td><%= (pagination.currentPage - 1) * 10 + i + 1 %></td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <img src="<%= p.image || '/images/placeholder.svg' %>" class="table-thumb" alt="<%= p.name %>">
+                  <div>
+                    <a href="/admin/products/<%= p._id %>" class="table-link d-block" style="color: rgb(53, 15, 205);"><%= p.name %></a>
+                    <% if (p.sku) { %><small class="text-muted"><%= p.sku %></small><% } %>
+                  </div>
+                </div>
+              </td>
+              <td><%= p.category ? p.category.name : '—' %></td>
+              <td class="fw-semibold">$<%= p.price.toFixed(2) %></td>
+              <td><span class="badge <%= p.stock <= 5 ? 'bg-danger' : 'bg-success' %>"><%= p.stock %></span></td>
+              <td><span class="badge <%= p.isActive ? 'bg-success' : 'bg-secondary' %>"><%= p.isActive ? 'Active' : 'Inactive' %></span></td>
+              <td class="text-end">
+                <div class="action-btns">
+                  <a href="/admin/products/<%= p._id %>" class="action-btn"><i class="bi bi-eye"></i></a>
+                  <a href="/admin/products/<%= p._id %>/edit" class="action-btn"><i class="bi bi-pencil"></i></a>
+                  <form action="/admin/products/<%= p._id %>?_method=DELETE" method="POST" class="d-inline" data-confirm="Delete this product and its image?">
+                    <button type="submit" class="action-btn action-btn-danger"><i class="bi bi-trash"></i></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr><td colspan="7" class="text-center text-muted py-5">No products found</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+  <div class="nv-card-footer"><%- include('../../partials/pagination', { pagination }) %></div>
+</div>

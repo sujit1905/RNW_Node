@@ -1,0 +1,18 @@
+<!-- OTP verification page for confirming the password reset code -->
+<h2 class="auth-title">Verify OTP</h2>
+<p class="auth-subtitle">Enter the 6-digit code sent to your email</p>
+
+<form action="/auth/verify-otp" method="POST" class="nv-form" data-loading>
+  <input type="hidden" name="email" value="<%= email %>">
+  <div class="otp-input-group mb-4">
+    <input type="text" class="form-control otp-input" id="otp" name="otp" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required autofocus>
+  </div>
+  <button type="submit" class="btn btn-primary w-100 nv-btn">
+    <span class="btn-text">Verify OTP</span>
+    <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+  </button>
+</form>
+
+<div class="auth-links">
+  <a href="/auth/forgot-password"><i class="bi bi-arrow-left me-1"></i>Resend OTP</a>
+</div>

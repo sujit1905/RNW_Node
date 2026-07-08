@@ -1,0 +1,227 @@
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Post Header -->
+            <article class="mb-5">
+                <% if (post.featuredImage) { %>
+                    <img src="<%= post.featuredImage %>" alt="<%= post.title %>" class="img-fluid rounded mb-4" style="max-height: 500px; width: 100%; object-fit: cover;">
+                <% } %>
+
+                <div class="mb-4">
+                    <h1 class="display-5 fw-bold mb-3"><%= post.title %></h1>
+                    
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 border-bottom pb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="<%= post.author.profileImage %>" alt="<%= post.author.username %>" 
+                                 class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                            <div>
+                                <p class="mb-0"><strong><%= post.author.getFullName ? post.author.getFullName() : post.author.username %></strong></p>
+                                <small class="text-muted">@<%= post.author.username %></small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <p class="mb-1 small"><%= new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                            <small class="text-muted"><i class="fas fa-eye me-1"></i><%= post.views %> views</small>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="badge bg-primary me-2"><%= post.category %></span>
+                        <span class="badge bg-secondary"><%= post.status %></span>
+                    </div>
+                </div>
+
+                <!-- Post Content -->
+                <div class="post-content mb-5">
+                    <%- post.content %>
+                </div>
+
+                <!-- Post Actions -->
+                <div class="border-top border-bottom py-4 mb-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-light w-100 like-btn" data-slug="<%= post.slug %>" data-liked="<%= isLiked %>">
+                                <i class="fas fa-heart <%= isLiked ? 'text-danger' : '' %>" style="margin-right: 5px;"></i>
+                                <span class="like-count"><%= post.likes.length %></span> Likes
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-light w-100" onclick="document.getElementById('commentForm').scrollIntoView({ behavior: 'smooth' })">
+                                <i class="fas fa-comments" style="margin-right: 5px;"></i>
+                                <%= post.comments.length %> Comments
+                            </button>
+                        </div>
+                        <% if (user && user._id.toString() === post.author._id.toString()) { %>
+                            <div class="col-md-4">
+                                <div class="btn-group w-100">
+                                    <a href="/blog/edit/<%= post.slug %>" class="btn btn-light">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <form method="POST" action="/blog/delete/<%= post.slug %>" class="d-inline" onsubmit="return confirm('Delete this post?');">
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="mb-5">
+                    <h3 class="mb-4"><i class="fas fa-comments me-2"></i>Comments (<%= post.comments.length %>)</h3>
+
+                    <% if (user) { %>
+                        <div id="commentForm" class="mb-4">
+                            <form method="POST" action="/blog/comment/<%= post.slug %>" class="comment-form">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <textarea class="form-control comment-textarea" placeholder="Share your thoughts..." rows="3" required></textarea>
+                                    </div>
+                                    <div class="card-footer bg-light">
+                                        <button type="submit" class="btn btn-primary btn-sm">Post Comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    <% } else { %>
+                        <div class="alert alert-info">
+                            <a href="/auth/login">Sign in</a> to comment on this post.
+                        </div>
+                    <% } %>
+
+                    <!-- Comments List -->
+                    <div class="comments-list">
+                        <% if (post.comments.length === 0) { %>
+                            <p class="text-muted text-center py-4">No comments yet. Be the first to comment!</p>
+                        <% } else { %>
+                            <% post.comments.forEach(comment => { %>
+                                <div class="card mb-3 border-0 bg-light">
+                                    <div class="card-body">
+                                        <div class="d-flex gap-3">
+                                            <img src="<%= comment.author.profileImage %>" alt="<%= comment.author.username %>" 
+                                                 class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <p class="mb-1">
+                                                    <strong><%= comment.author.username %></strong>
+                                                    <small class="text-muted ms-2"><%= new Date(comment.createdAt).toLocaleDateString() %></small>
+                                                </p>
+                                                <p class="mb-0"><%= comment.text %></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Related Posts -->
+                <% if (relatedPosts.length > 0) { %>
+                    <div class="border-top pt-5">
+                        <h3 class="mb-4">Related Posts</h3>
+                        <div class="row g-3">
+                            <% relatedPosts.forEach(relPost => { %>
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= relPost.title %></h5>
+                                            <p class="card-text text-muted small"><%= relPost.excerpt ? relPost.excerpt.substring(0, 80) : relPost.content.substring(0, 80) %>...</p>
+                                            <a href="/blog/post/<%= relPost.slug %>" class="btn btn-sm btn-outline-primary">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } %>
+            </article>
+        </div>
+    </div>
+</div>
+
+<script>
+// Like button functionality
+document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        const slug = this.dataset.slug;
+        try {
+            const response = await fetch(`/blog/like/${slug}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            const icon = this.querySelector('i');
+            if (data.isLiked) {
+                icon.classList.add('text-danger');
+            } else {
+                icon.classList.remove('text-danger');
+            }
+            this.querySelector('.like-count').textContent = data.likeCount;
+        } catch (err) {
+            console.error(err);
+        }
+    });
+});
+
+// Comment form submission
+document.querySelectorAll('.comment-form').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const textarea = this.querySelector('.comment-textarea');
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        const slug = '<%= post.slug %>';
+        try {
+            const response = await fetch(`/blog/comment/${slug}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const data = await response.json();
+            textarea.value = '';
+            location.reload();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to post comment');
+        }
+    });
+});
+</script>
+
+<style>
+.post-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.post-content h2, .post-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #222;
+}
+
+.post-content pre {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.post-content code {
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9rem;
+}
+</style>

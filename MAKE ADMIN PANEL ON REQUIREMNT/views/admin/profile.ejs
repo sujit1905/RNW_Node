@@ -1,0 +1,88 @@
+<% // Profile management page for updating personal information and password. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Profile' }] %>
+
+<%- include('../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">My Profile</h1>
+    <p class="page-desc">Manage your account details and security</p>
+  </div>
+</div>
+
+<!-- Profile page layout with avatar preview and account settings forms -->
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="nv-card profile-card text-center">
+      <div class="profile-avatar-wrap">
+        <% if (profile.avatar) { %>
+          <img src="<%= profile.avatar %>" alt="Avatar" class="profile-avatar" id="avatarPreview">
+        <% } else { %>
+          <div class="profile-avatar-placeholder" id="avatarPreview"><%= profile.fullName.charAt(0).toUpperCase() %></div>
+        <% } %>
+      </div>
+      <h4 class="mt-3 mb-1"><%= profile.fullName %></h4>
+      <p class="text-muted mb-3" style="color:rgb(101, 68, 233) !important;"><%= profile.email %></p>
+      <span class="badge bg-primary-subtle text-primary">Administrator</span>
+      <p class="text-muted small mt-3 mb-0" style="color:rgb(101, 68, 233) !important;">Member since <%= new Date(profile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) %></p>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <!-- Form for editing the admin profile details -->
+    <div class="nv-card mb-4">
+      <div class="nv-card-header"><h5><i class="bi bi-person-gear me-2"></i>Edit Profile</h5></div>
+      <div class="nv-card-body">
+        <form action="/admin/profile" method="POST" enctype="multipart/form-data" class="nv-form" data-loading>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control nv-input" name="fullName" value="<%= profile.fullName %>" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input type="text" class="form-control nv-input" name="phone" value="<%= profile.phone || '' %>">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control nv-input" value="<%= profile.email %>" disabled>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Avatar</label>
+              <input type="file" class="form-control nv-input" name="avatar" accept="image/*" data-preview="#avatarPreview">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary nv-btn mt-4">
+            <span class="btn-text">Save Changes</span>
+            <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password update form for account security -->
+    <div class="nv-card">
+      <div class="nv-card-header"><h5><i class="bi bi-shield-lock me-2"></i>Change Password</h5></div>
+      <div class="nv-card-body">
+        <form action="/admin/change-password" method="POST" class="nv-form" data-loading>
+          <div class="mb-3">
+            <label class="form-label">Current Password</label>
+            <input type="password" class="form-control nv-input" name="currentPassword" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input type="password" class="form-control nv-input" name="newPassword" minlength="6" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control nv-input" name="confirmPassword" required>
+          </div>
+          <button type="submit" class="btn btn-outline-light nv-btn">
+            <span class="btn-text">Update Password</span>
+            <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

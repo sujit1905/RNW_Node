@@ -1,0 +1,132 @@
+<% // Dashboard page showing quick statistics and recent activity for the admin panel. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Overview' }] %>
+
+<%- include('../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-desc">Welcome back, <%= currentUser.fullName.split(' ')[0] %>. Here's what's happening today.</p>
+  </div>
+</div>
+
+<!-- Summary cards showing the current inventory and account statistics -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-indigo"><i class="bi bi-folder2-open"></i></div>
+    <div class="stat-body">
+      <span class="stat-value"><%= stats.categories %></span>
+      <span class="stat-label">Categories</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-violet"><i class="bi bi-diagram-2"></i></div>
+    <div class="stat-body">
+      <span class="stat-value"><%= stats.subcategories %></span>
+      <span class="stat-label">Subcategories</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-cyan"><i class="bi bi-layers"></i></div>
+    <div class="stat-body">
+      <span class="stat-value"><%= stats.extraCategories %></span>
+      <span class="stat-label">Extra Categories</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-emerald"><i class="bi bi-box-seam"></i></div>
+    <div class="stat-body">
+      <span class="stat-value"><%= stats.products %></span>
+      <span class="stat-label">Products</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-amber"><i class="bi bi-people"></i></div>
+    <div class="stat-body">
+      <span class="stat-value"><%= stats.users %></span>
+      <span class="stat-label">Users</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-rose"><i class="bi bi-exclamation-triangle"></i></div>
+    <div class="stat-body">
+      <span class="stat-value"><%= stats.lowStock %></span>
+      <span class="stat-label">Low Stock</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main dashboard content area with recent products and recent users -->
+<div class="row g-4 mt-1">
+  <div class="col-lg-7">
+    <div class="nv-card">
+      <div class="nv-card-header">
+        <h5><i class="bi bi-clock-history me-2"></i>Recent Products</h5>
+        <a href="/admin/products" class="btn btn-sm btn-outline-light">View all</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table nv-table mb-0">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (recentProducts.length) { %>
+              <% recentProducts.forEach(function(p) { %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="<%= p.image || '/images/placeholder.svg' %>" class="table-thumb" alt="">
+                      <a href="/admin/products/<%= p._id %>" class="table-link" style="color: rgb(53, 15, 205);"><%= p.name %></a>
+                    </div>
+                  </td>
+                  <td><%= p.category ? p.category.name : '—' %></td>
+                  <td>$<%= p.price.toFixed(2) %></td>
+                  <td><span class="badge <%= p.stock <= 5 ? 'bg-danger' : 'bg-success' %>"><%= p.stock %></span></td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr><td colspan="4" class="text-center text-muted py-4">No products yet</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="nv-card">
+      <div class="nv-card-header">
+        <h5><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
+      </div>
+      <div class="recent-list">
+        <% if (recentUsers.length) { %>
+          <% recentUsers.forEach(function(u) { %>
+            <div class="recent-item">
+              <div class="recent-avatar"><%= u.fullName.charAt(0).toUpperCase() %></div>
+              <div class="recent-info">
+                <span class="recent-name"><%= u.fullName %></span>
+                <span class="recent-meta"><%= u.email %></span>
+              </div>
+              <span class="recent-date"><%= new Date(u.createdAt).toLocaleDateString() %></span>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p class="text-muted text-center py-4 mb-0">No users yet</p>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="nv-card mt-4 quick-actions">
+      <div class="nv-card-header"><h5><i class="bi bi-lightning me-2"></i>Quick Actions</h5></div>
+      <div class="quick-grid">
+        <a href="/admin/products/create" class="quick-btn"><i class="bi bi-plus-circle"></i>Add Product</a>
+        <a href="/admin/categories/create" class="quick-btn"><i class="bi bi-folder-plus"></i>Add Category</a>
+        <a href="/admin/profile" class="quick-btn"><i class="bi bi-gear"></i>Settings</a>
+      </div>
+    </div>
+  </div>
+</div>

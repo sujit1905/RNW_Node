@@ -1,0 +1,50 @@
+<% // Form for editing an existing extra category and its links. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Extra Categories', url: '/admin/extra-categories' }, { label: 'Edit' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div><h1 class="page-title">Edit Extra Category</h1></div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <form action="/admin/extra-categories/<%= item._id %>?_method=PUT" method="POST" class="nv-form" data-loading data-cascade data-extra>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control nv-input" name="name" value="<%= item.name %>" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Category <span class="text-danger">*</span></label>
+        <select class="form-select nv-input" name="category" id="categorySelect" required>
+          <% categories.forEach(function(c) { %>
+            <option value="<%= c._id %>" <%= String(item.category) === String(c._id) ? 'selected' : '' %>><%= c.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Subcategory <span class="text-danger">*</span></label>
+        <select class="form-select nv-input" name="subcategory" id="subcategorySelect" required>
+          <% subcategories.forEach(function(s) { %>
+            <option value="<%= s._id %>" <%= String(item.subcategory) === String(s._id) ? 'selected' : '' %>><%= s.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Status</label>
+        <select class="form-select nv-input" name="isActive">
+          <option value="true" <%= item.isActive ? 'selected' : '' %>>Active</option>
+          <option value="false" <%= !item.isActive ? 'selected' : '' %>>Inactive</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control nv-input" name="description" rows="3"><%= item.description || '' %></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/extra-categories" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn"><span class="btn-text">Update</span><span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span></button>
+    </div>
+  </form>
+</div>

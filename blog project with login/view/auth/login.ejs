@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to your Inkwell account and continue your writing journey.">
+  <title><%= title %> | Inkwell</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M8 22 L14 8 L18 16 L22 10 L26 22' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='22' cy='22' r='3' fill='%2306B6D4'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Inkwell Design System -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <style>
+    /* Extra styles for auth page */
+    html, body { height: 100%; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     LOGIN PAGE — Split Screen Layout
+══════════════════════════════════════════════════════════ -->
+<div class="auth-layout">
+
+  <!-- ── Left Panel: Brand Illustration ── -->
+  <aside class="auth-panel" aria-label="Inkwell brand panel">
+    <!-- Blobs -->
+    <div class="auth-panel__blob auth-panel__blob-1" aria-hidden="true"></div>
+    <div class="auth-panel__blob auth-panel__blob-2" aria-hidden="true"></div>
+
+    <div class="auth-panel__content">
+      <!-- Logo -->
+      <div class="auth-panel__logo">
+        <div class="auth-panel__logo-icon" aria-hidden="true">
+            <i class="fa-solid fa-feather-pointed" style="color:white; font-size:22px;"></i>
+          </div>
+        <span class="auth-panel__brand">Inkwell</span>
+      </div>
+
+      <h1 class="auth-panel__title">
+        Your story is<br>waiting to be told.
+      </h1>
+      <p class="auth-panel__subtitle">
+        Join a community of passionate writers and readers who believe in the power of great ideas.
+      </p>
+
+      <!-- Feature list -->
+      <div class="auth-panel__features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon" aria-hidden="true">
+            <i class="fa-solid fa-pen-nib"></i>
+          </div>
+          <span>Publish beautiful articles in minutes</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon" aria-hidden="true">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <span>Connect with thousands of readers</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon" aria-hidden="true">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <span>Your writing, always safe and secure</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Right Panel: Login Form ── -->
+  <section class="auth-form-side" aria-label="Login form">
+    <div class="auth-form-card">
+
+      <!-- Header -->
+      <div class="auth-form-card__header animate-fade-in-up">
+        <!-- Mobile logo (hidden on desktop) -->
+        <a href="/" style="display:flex; align-items:center; gap:8px; margin-bottom:2rem; text-decoration:none; color:inherit;">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#4F46E5,#8B5CF6);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <i class="fa-solid fa-feather-pointed" style="color:white;font-size:14px;" aria-hidden="true"></i>
+          </div>
+          <span style="font-family:var(--font-heading);font-weight:800;font-size:1.25rem;background:linear-gradient(135deg,#4F46E5,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Inkwell</span>
+        </a>
+        <h2 class="auth-form-card__title">Welcome back</h2>
+        <p class="auth-form-card__subtitle">Sign in to your account to continue your journey</p>
+      </div>
+
+      <!-- Alerts -->
+      <% if (error) { %>
+        <div class="alert alert-error animate-fade-in" role="alert" aria-live="polite" style="margin-bottom:1.5rem;">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+          <span><%= error %></span>
+        </div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="alert alert-success animate-fade-in" role="alert" aria-live="polite" style="margin-bottom:1.5rem;">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          <span><%= success %></span>
+        </div>
+      <% } %>
+
+      <!-- Login Form — action/method UNCHANGED -->
+      <form action="/auth/login" method="POST" class="auth-form animate-fade-in-up delay-1" id="login-form" novalidate>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label-icon" for="login-email">
+            <i class="fa-solid fa-envelope" style="color:var(--clr-primary);font-size:0.875rem;" aria-hidden="true"></i>
+            Email address
+          </label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i>
+            <input
+              id="login-email"
+              type="email"
+              name="email"
+              class="form-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+              aria-required="true"
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label class="form-label-icon" for="login-password">
+              <i class="fa-solid fa-lock" style="color:var(--clr-primary);font-size:0.875rem;" aria-hidden="true"></i>
+              Password
+            </label>
+            <a href="/" style="font-size:var(--fs-xs); color:var(--clr-primary); font-weight:600;">Forgot password?</a>
+          </div>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
+            <input
+              id="login-password"
+              type="password"
+              name="password"
+              class="form-input"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+              aria-required="true"
+            >
+            <button
+              type="button"
+              class="input-action"
+              id="toggle-password"
+              aria-label="Toggle password visibility"
+              onclick="togglePwd('login-password', this)"
+            >
+              <i class="fa-solid fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember me -->
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:var(--fs-sm); color:var(--clr-text-muted);">
+          <input type="checkbox" id="remember-me" name="remember" style="width:16px;height:16px;accent-color:var(--clr-primary);">
+          Keep me signed in for 7 days
+        </label>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-block" style="padding:0.875rem;" id="login-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i>
+          Sign In to Inkwell
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="auth-divider" style="margin-top:1.5rem;">
+        <span>or</span>
+      </div>
+
+      <!-- Footer link -->
+      <div class="auth-footer-link">
+        Don't have an account?
+        <a href="/auth/register" id="login-register-link">Create one free</a>
+      </div>
+
+      <div style="text-align:center; margin-top:1.5rem;">
+        <a href="/" style="font-size:var(--fs-xs); color:var(--clr-text-muted);">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true" style="margin-right:4px;"></i>
+          Back to Inkwell
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Password visibility toggle
+  function togglePwd(inputId, btn) {
+    var input = document.getElementById(inputId);
+    var icon  = btn.querySelector('i');
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.className = 'fa-solid fa-eye-slash';
+      btn.setAttribute('aria-label', 'Hide password');
+    } else {
+      input.type = 'password';
+      icon.className = 'fa-solid fa-eye';
+      btn.setAttribute('aria-label', 'Show password');
+    }
+  }
+</script>
+
+</body>
+</html>

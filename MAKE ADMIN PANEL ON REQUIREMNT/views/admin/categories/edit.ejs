@@ -1,0 +1,39 @@
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Categories', url: '/admin/categories' }, { label: 'Edit' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Edit Category</h1>
+    <p class="page-desc">Update category details</p>
+  </div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <form action="/admin/categories/<%= category._id %>?_method=PUT" method="POST" class="nv-form" data-loading>
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label">Category Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control nv-input" name="name" value="<%= category.name %>" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Status</label>
+        <select class="form-select nv-input" name="isActive">
+          <option value="true" <%= category.isActive ? 'selected' : '' %>>Active</option>
+          <option value="false" <%= !category.isActive ? 'selected' : '' %>>Inactive</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control nv-input" name="description" rows="3"><%= category.description || '' %></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/categories" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn">
+        <span class="btn-text">Update Category</span>
+        <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+      </button>
+    </div>
+  </form>
+</div>

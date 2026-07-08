@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #e91e63, #ff6090);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #aaa;
+            font-size: 1.1em;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            color: #ff6090;
+            font-size: 1.5em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            color: #ddd;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #e91e63;
+            background: rgba(233, 30, 99, 0.1);
+            box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: #888;
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #e91e63, #ff6090);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(233, 30, 99, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .movies-section h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #ff6090;
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .movie-card {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            overflow: visible;
+            transition: all 0.3s ease;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
+
+        .movie-card:hover {
+            transform: none;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        .movie-image {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        .movie-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .movie-card:hover .movie-image {
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .movie-card:hover .movie-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(59, 130, 246, 0.2);
+            z-index: 2;
+        }
+
+        .movie-info {
+            padding: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movie-year {
+            color: #aaa;
+            font-size: 0.65em;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            font-weight: 500;
+        }
+
+        .movie-type {
+            color: #aaa;
+            font-size: 0.65em;
+            margin-bottom: 6px;
+            text-transform: capitalize;
+            letter-spacing: 0.3px;
+            font-weight: 400;
+        }
+
+        .movie-title {
+            font-size: 0.95em;
+            margin-bottom: 12px;
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.2;
+            flex-grow: 1;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .movie-actions a {
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .btn {
+            padding: 8px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-edit {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            background: #ec4899;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #f43f5e;
+            transform: translateY(-1px);
+        }
+
+        /* Custom File Input */
+        .file-input-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+        }
+
+        .file-input-label:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .file-input-label.active {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .file-input-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-button:hover {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            transform: translateY(-2px);
+        }
+
+        .file-input-text {
+            color: #aaa;
+            font-size: 0.95em;
+            flex-grow: 1;
+        }
+
+        .file-input-text.has-file {
+            color: #6366f1;
+            font-weight: 500;
+        }
+
+        .no-movies {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+        }
+
+        .no-movies p {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .movie-image {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="header">
+            <h1>🎬 Movies</h1>
+            <p>Manage Your Movie Collection</p>
+        </div>
+
+        <!-- Add Movie Form Section -->
+        <div class="form-section">
+            <h2>Add New Movie</h2>
+            <form action="/add" method="POST" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Movie Title *</label>
+                        <input type="text" id="title" name="title" placeholder="Enter movie title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year">Release Year *</label>
+                        <input type="number" id="year" name="year" placeholder="2024" required min="1900" max="2099">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Genre/Type *</label>
+                        <input type="text" id="type" name="type" placeholder="e.g., Action, Drama, Comedy" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img">Movie Poster *</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="img" name="img" accept="image/*" required>
+                            <label for="img" class="file-input-label">
+                                <span class="file-input-text">No file chosen</span>
+                                <span class="file-input-button">
+                                    <span>Choose File</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">+ Add Movie</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Movies List Section -->
+        <div class="movies-section">
+            <h2>All Movies</h2>
+            
+            <!-- Empty State Message -->
+            <% if(movies.length === 0) { %>
+                <div class="no-movies">
+                    <p>No movies added yet. Add your first movie above!</p>
+                </div>
+            <% } else { %>
+                <!-- Movies Grid Display -->
+                <div class="movies-grid">
+                    <% movies.forEach((movie)=>{
+                        %>
+                        <div class="movie-card">
+                            <div class="movie-image">
+                                <img src="/uploads/<%= movie.img %>" alt="<%= movie.title %>" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22400%22%3E%3Crect fill=%22%23333%22 width=%22300%22 height=%22400%22/%3E%3C/svg%3E'">
+                            </div>
+                            <div class="movie-info">
+                                <div class="movie-year"><%= movie.year %>, <span class="movie-type"><%= movie.type %></span></div>
+                                <h3 class="movie-title"><%= movie.title %></h3>
+                                <div class="movie-actions">
+                                    <a href="/edit/<%= movie._id %>">
+                                        <button class="btn btn-edit">Edit</button>
+                                    </a>
+                                    <a href="/delete/<%= movie._id %>">
+                                        <button class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        // Handle custom file input display
+        const fileInput = document.getElementById('img');
+        const fileLabel = fileInput.nextElementSibling;
+        const fileText = fileLabel.querySelector('.file-input-text');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                fileText.textContent = this.files[0].name;
+                fileText.classList.add('has-file');
+                fileLabel.classList.add('active');
+            }
+        });
+
+        // Drag and Drop
+        fileLabel.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileLabel.classList.add('active');
+        });
+
+        fileLabel.addEventListener('dragleave', () => {
+            if (!fileInput.files.length) {
+                fileLabel.classList.remove('active');
+            }
+        });
+
+        fileLabel.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                fileInput.files = e.dataTransfer.files;
+                fileText.textContent = e.dataTransfer.files[0].name;
+                fileText.classList.add('has-file');
+                fileLabel.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

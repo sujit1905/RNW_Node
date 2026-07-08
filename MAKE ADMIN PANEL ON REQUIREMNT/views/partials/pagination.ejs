@@ -1,0 +1,18 @@
+<% // Render pagination links for list pages with multiple result pages. %>
+<% if (typeof pagination !== 'undefined' && pagination.totalPages > 1) { %>
+<nav class="nv-pagination" aria-label="Page navigation">
+  <ul class="pagination justify-content-center mb-0">
+    <li class="page-item <%= !pagination.prevUrl ? 'disabled' : '' %>">
+      <a class="page-link" href="<%= pagination.prevUrl || '#' %>"><i class="bi bi-chevron-left"></i></a>
+    </li>
+    <% pagination.pages.forEach(function(p) { %>
+      <li class="page-item <%= p.active ? 'active' : '' %>">
+        <a class="page-link" href="<%= p.url %>"><%= p.number %></a>
+      </li>
+    <% }); %>
+    <li class="page-item <%= !pagination.nextUrl ? 'disabled' : '' %>">
+      <a class="page-link" href="<%= pagination.nextUrl || '#' %>"><i class="bi bi-chevron-right"></i></a>
+    </li>
+  </ul>
+</nav>
+<% } %>

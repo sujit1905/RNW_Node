@@ -1,0 +1,31 @@
+<!-- Registration form for creating a new admin account -->
+<h2 class="auth-title">Create account</h2>
+<p class="auth-subtitle">Set up your admin credentials</p>
+
+<!-- Registration form for creating a new admin account -->
+<form action="/auth/signup" method="POST" class="nv-form" data-loading>
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full Name" required>
+    <label for="fullName"><i class="bi bi-person me-2"></i>Full name</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+    <label for="email"><i class="bi bi-envelope me-2"></i>Email address</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="6" required>
+    <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+  </div>
+  <div class="form-floating mb-4">
+    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm" required>
+    <label for="confirmPassword"><i class="bi bi-shield-check me-2"></i>Confirm password</label>
+  </div>
+  <button type="submit" class="btn btn-primary w-100 nv-btn">
+    <span class="btn-text">Create Account</span>
+    <span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span>
+  </button>
+</form>
+
+<div class="auth-links">
+  <a href="/auth/login">Already have an account? Sign in</a>
+</div>

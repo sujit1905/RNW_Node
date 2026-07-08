@@ -1,0 +1,65 @@
+# ─── Secrets & env (never commit) ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*_rsa
+*_dsa
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+**/secrets.*
+.npmrc.local
+
+# ─── Dependencies ───────────────────────────────────────────────────────────────
+node_modules/
+
+# ─── Build output ───────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vite/
+.cache/
+*.tsbuildinfo
+
+# ─── Logs & diagnostics ─────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ─── Testing & coverage ─────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── Runtime / uploads (keep local only unless you intentionally version them) ──
+uploads/
+tmp/
+temp/
+
+# ─── OS files ───────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ─── Editor / IDE ───────────────────────────────────────────────────────────────
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# ─── Optional local tooling ─────────────────────────────────────────────────────
+.turbo/
+.vercel/
+.netlify/

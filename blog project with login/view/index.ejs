@@ -1,0 +1,242 @@
+<%- include('./partials/header') %>
+
+<!-- ══════════════════════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════════════════════ -->
+<section class="hero" aria-label="Hero">
+  <!-- Animated background blobs -->
+  <div class="hero__blob hero__blob-1" aria-hidden="true"></div>
+  <div class="hero__blob hero__blob-2" aria-hidden="true"></div>
+  <div class="hero__blob hero__blob-3" aria-hidden="true"></div>
+
+  <div class="hero__content">
+
+    <!-- Eyebrow badge -->
+    <div class="hero__eyebrow" aria-hidden="true">
+      <span class="hero__eyebrow-dot"></span>
+      Premium Reading Experience
+    </div>
+
+    <!-- Main heading -->
+    <h1 class="hero__title">
+      Where
+      <span class="hero__title-grad">Great Ideas</span>
+      Find Their Voice
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="hero__subtitle">
+      Discover handcrafted articles, inspiring stories, and deep insights from writers who care about quality over noise.
+    </p>
+
+    <!-- CTAs -->
+    <div class="hero__actions">
+      <% if (!user) { %>
+        <a href="/auth/register" class="hero__btn-primary" id="hero-start-btn">
+          <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+          Start Writing Free
+        </a>
+        <a href="#latest-posts" class="hero__btn-ghost" id="hero-explore-btn">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i>
+          Explore Stories
+        </a>
+      <% } else { %>
+        <a href="/blog/new" class="hero__btn-primary" id="hero-write-btn">
+          <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+          Write a Story
+        </a>
+        <a href="#latest-posts" class="hero__btn-ghost" id="hero-read-btn">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i>
+          Read Latest
+        </a>
+      <% } %>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════════════════════════ -->
+<div class="stats-bar" role="region" aria-label="Platform statistics">
+  <div class="stats-bar__inner">
+    <div class="stats-bar__item animate-fade-in-up delay-1">
+      <span class="stats-bar__num"><%= blogs.length || 0 %>+</span>
+      <span class="stats-bar__label">Articles</span>
+    </div>
+    <div class="stats-bar__divider" aria-hidden="true"></div>
+    <div class="stats-bar__item animate-fade-in-up delay-2">
+      <span class="stats-bar__num">10K+</span>
+      <span class="stats-bar__label">Monthly Readers</span>
+    </div>
+    <div class="stats-bar__divider" aria-hidden="true"></div>
+    <div class="stats-bar__item animate-fade-in-up delay-3">
+      <span class="stats-bar__num">50+</span>
+      <span class="stats-bar__label">Categories</span>
+    </div>
+    <div class="stats-bar__divider" aria-hidden="true"></div>
+    <div class="stats-bar__item animate-fade-in-up delay-4">
+      <span class="stats-bar__num">100%</span>
+      <span class="stats-bar__label">Free Forever</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CATEGORIES STRIP
+══════════════════════════════════════════════════════════ -->
+<% if (blogs.length > 0) { %>
+<section style="background: var(--clr-surface); border-bottom: 1px solid var(--clr-border); padding: var(--sp-5) var(--sp-6);">
+  <div style="max-width: var(--max-width); margin: 0 auto;">
+    <div class="categories-strip" role="list" aria-label="Blog categories">
+      <span class="category-pill active" role="listitem">
+        <span class="cat-dot" aria-hidden="true"></span>
+        All Posts
+      </span>
+      <% 
+        // Collect unique categories from blogs
+        var cats = [];
+        blogs.forEach(function(b) {
+          if (b.category && cats.indexOf(b.category) === -1) cats.push(b.category);
+        });
+        cats.forEach(function(cat) {
+      %>
+      <span class="category-pill" role="listitem">
+        <span class="cat-dot" aria-hidden="true"></span>
+        <%= cat %>
+      </span>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- ══════════════════════════════════════════════════════════
+     LATEST POSTS / BLOG GRID
+══════════════════════════════════════════════════════════ -->
+<section class="section" id="latest-posts" aria-label="Latest articles">
+  <div class="container">
+
+    <div class="section-header animate-fade-in-up">
+      <div>
+        <div class="section-tag">
+          <div class="section-tag-line" aria-hidden="true"></div>
+          Latest Stories
+        </div>
+        <h2 class="section-title">Fresh From the Inkwell</h2>
+        <p class="section-subtitle">Handpicked stories from our community of writers, curated for curious minds.</p>
+      </div>
+      <% if (user) { %>
+        <a href="/blog/new" class="btn btn-primary" id="section-write-btn" style="align-self:flex-start; white-space:nowrap;">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          New Post
+        </a>
+      <% } %>
+    </div>
+
+    <!-- ── Blog Cards Grid ── -->
+    <% if (blogs.length === 0) { %>
+      <!-- Empty State -->
+      <div class="empty-state animate-fade-in-up">
+        <div class="empty-state__icon" aria-hidden="true">
+          <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <h3 class="empty-state__title">No Stories Yet</h3>
+        <p class="empty-state__text">
+          The Inkwell is quiet. Be the first to break the silence — share a story, an idea, or a thought that deserves to be heard.
+        </p>
+        <% if (user) { %>
+          <a href="/blog/new" class="btn btn-primary btn-lg" id="empty-write-btn">
+            <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+            Write the First Story
+          </a>
+        <% } else { %>
+          <a href="/auth/register" class="btn btn-primary btn-lg" id="empty-join-btn">
+            <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+            Join Inkwell
+          </a>
+        <% } %>
+      </div>
+
+    <% } else { %>
+      <div class="blog-grid" role="list" aria-label="Blog articles">
+        <% blogs.forEach(function(blog, i) { %>
+          <article class="blog-card animate-fade-in-up" style="animation-delay: <%= i * 0.07 %>s" role="listitem">
+            <a href="/blog/<%= blog._id %>" class="blog-card__image" aria-label="Read <%= blog.title %>">
+              <img
+                src="<%= blog.images || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800' %>"
+                alt="<%= blog.title %>"
+                loading="lazy"
+              >
+              <div class="blog-card__image-overlay" aria-hidden="true"></div>
+            </a>
+
+            <div class="blog-card__body">
+              <!-- Meta: category + reading time -->
+              <div class="blog-card__meta">
+                <span class="badge badge-primary"><%= blog.category %></span>
+                <span class="badge badge-surface">
+                  <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                  <%= Math.ceil((blog.content || '').split(' ').length / 200) || 1 %> min read
+                </span>
+              </div>
+
+              <!-- Title -->
+              <a href="/blog/<%= blog._id %>" aria-label="<%= blog.title %>">
+                <h3 class="blog-card__title"><%= blog.title %></h3>
+              </a>
+
+              <!-- Excerpt -->
+              <p class="blog-card__excerpt">
+                <%= blog.content ? blog.content.substring(0, 160) + '…' : '' %>
+              </p>
+
+              <!-- Footer: date + read more -->
+              <div class="blog-card__footer">
+                <time style="font-size:var(--fs-xs); color:var(--clr-text-muted); font-weight:500;">
+                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                  &nbsp;<%= new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                </time>
+                <a href="/blog/<%= blog._id %>" class="blog-card__read-more">
+                  Read more
+                  <i class="fa-solid fa-arrow-right" style="font-size:0.75rem;" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    <% } %>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     NEWSLETTER SECTION
+══════════════════════════════════════════════════════════ -->
+<div class="container">
+  <div class="newsletter animate-fade-in-up" role="complementary" aria-label="Newsletter signup">
+    <h2 class="newsletter__title">
+      Stay in the loop. <br>
+      Don't miss a story.
+    </h2>
+    <p class="newsletter__subtitle">
+      Get the best articles delivered straight to your inbox every week. No spam, ever.
+    </p>
+    <form class="newsletter__form" id="newsletter-form" onsubmit="return false;" aria-label="Newsletter subscription">
+      <label for="newsletter-email" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;">Email address</label>
+      <input
+        id="newsletter-email"
+        class="newsletter__input"
+        type="email"
+        placeholder="Enter your email address..."
+        autocomplete="email"
+      >
+      <button type="submit" class="newsletter__btn" id="newsletter-submit-btn">
+        Subscribe
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

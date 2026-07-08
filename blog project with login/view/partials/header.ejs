@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inkwell — Where ideas find their voice. Discover premium articles, stories, and insights from writers around the world.">
+  <title><%= typeof title !== 'undefined' ? title + ' | Inkwell' : 'Inkwell — Where Ideas Find Their Voice' %></title>
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M8 22 L14 8 L18 16 L22 10 L26 22' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='22' cy='22' r='3' fill='%2306B6D4'/></svg>">
+
+  <!-- Google Fonts: Plus Jakarta Sans + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Inkwell Design System -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar" id="inkwell-nav">
+    <div class="navbar__inner">
+
+      <!-- Logo -->
+      <a href="/" class="navbar__logo" aria-label="Inkwell Home">
+        <div class="navbar__logo-icon" aria-hidden="true">
+          <i class="fa-solid fa-feather-pointed" style="color:white; font-size:17px;"></i>
+        </div>
+        <span class="navbar__logo-text">Inkwell</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="navbar__links" aria-label="Main navigation">
+        <a href="/" class="navbar__link">Home</a>
+        <a href="/" class="navbar__link">Latest</a>
+        <a href="/" class="navbar__link">Categories</a>
+        <a href="/" class="navbar__link">About</a>
+        <a href="/" class="navbar__link">Contact</a>
+      </nav>
+
+      <!-- Desktop Actions -->
+      <div class="navbar__actions">
+        <% if (user) { %>
+          <!-- Write button -->
+          <a href="/blog/new" class="btn btn-primary btn-sm" id="nav-write-btn">
+            <i class="fa-solid fa-pen" aria-hidden="true"></i>
+            Write
+          </a>
+          <!-- User badge -->
+          <div class="navbar__user-badge" id="nav-user-badge">
+            <div class="navbar__avatar" aria-hidden="true">
+              <%= user.username.charAt(0) %>
+            </div>
+            <span><%= user.username %></span>
+          </div>
+          <!-- Logout -->
+          <a href="/auth/logout" class="btn btn-surface btn-sm" id="nav-logout-btn">
+            <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+          </a>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-ghost btn-sm" id="nav-login-btn">Sign in</a>
+          <a href="/auth/register" class="btn btn-primary btn-sm" id="nav-register-btn">
+            Get Started
+          </a>
+        <% } %>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="navbar__toggle" id="nav-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="navbar__mobile" id="nav-mobile" aria-hidden="true">
+    <nav class="navbar__mobile-links" aria-label="Mobile navigation">
+      <a href="/" class="navbar__mobile-link">
+        <i class="fa-solid fa-house" style="width:16px; color:var(--clr-primary)"></i>
+        Home
+      </a>
+      <a href="/" class="navbar__mobile-link">
+        <i class="fa-solid fa-fire" style="width:16px; color:var(--clr-primary)"></i>
+        Latest Posts
+      </a>
+      <a href="/" class="navbar__mobile-link">
+        <i class="fa-solid fa-tags" style="width:16px; color:var(--clr-primary)"></i>
+        Categories
+      </a>
+      <a href="/" class="navbar__mobile-link">
+        <i class="fa-solid fa-circle-info" style="width:16px; color:var(--clr-primary)"></i>
+        About
+      </a>
+      <a href="/" class="navbar__mobile-link">
+        <i class="fa-solid fa-envelope" style="width:16px; color:var(--clr-primary)"></i>
+        Contact
+      </a>
+    </nav>
+    <div class="navbar__mobile-actions">
+      <% if (user) { %>
+        <a href="/blog/new" class="btn btn-primary btn-block" id="mobile-write-btn">
+          <i class="fa-solid fa-pen"></i> Write a Story
+        </a>
+        <a href="/auth/logout" class="btn btn-surface btn-block" id="mobile-logout-btn">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+        </a>
+      <% } else { %>
+        <a href="/auth/login" class="btn btn-ghost btn-block" id="mobile-login-btn">Sign In</a>
+        <a href="/auth/register" class="btn btn-primary btn-block" id="mobile-register-btn">Create Account</a>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT BEGINS
+  ══════════════════════════════════════════ -->
+  <main>
+
+  <script>
+    // ── Navbar: hamburger toggle ──────────────────────
+    (function () {
+      var toggle = document.getElementById('nav-toggle');
+      var menu   = document.getElementById('nav-mobile');
+      var nav    = document.getElementById('inkwell-nav');
+
+      if (toggle && menu) {
+        toggle.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('open');
+          menu.classList.toggle('open', !isOpen);
+          toggle.classList.toggle('open', !isOpen);
+          toggle.setAttribute('aria-expanded', String(!isOpen));
+          menu.setAttribute('aria-hidden', String(isOpen));
+          document.body.style.overflow = isOpen ? '' : 'hidden';
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+          if (!nav.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.remove('open');
+            toggle.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+          }
+        });
+      }
+
+      // ── Navbar: scroll shadow ───────────────────────
+      if (nav) {
+        window.addEventListener('scroll', function () {
+          nav.classList.toggle('scrolled', window.scrollY > 10);
+        }, { passive: true });
+      }
+    }());
+  </script>

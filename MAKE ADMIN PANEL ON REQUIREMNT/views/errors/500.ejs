@@ -1,0 +1,7 @@
+<!-- Custom page shown when the server encounters an internal error -->
+<div class="error-page text-center">
+  <div class="error-code">500</div>
+  <h2>Something went wrong</h2>
+  <p><%= typeof message !== 'undefined' ? message : 'An unexpected error occurred.' %></p>
+  <a href="/admin/dashboard" class="btn btn-primary nv-btn mt-3">Back to Dashboard</a>
+</div>

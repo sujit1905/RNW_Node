@@ -1,0 +1,65 @@
+<% // Main listing page for all categories with search and pagination. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Categories' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Categories</h1>
+    <p class="page-desc">Manage product categories</p>
+  </div>
+  <a href="/admin/categories/create" class="btn btn-primary nv-btn"><i class="bi bi-plus-lg me-1"></i>Add Category</a>
+</div>
+
+<div class="nv-card">
+  <div class="nv-card-header">
+    <form action="/admin/categories" method="GET" class="search-form">
+      <div class="search-input-wrap">
+        <i class="bi bi-search"></i>
+        <input type="text" name="search" class="form-control nv-input" placeholder="Search categories..." value="<%= search %>">
+      </div>
+      <button type="submit" class="btn btn-outline-light btn-sm">Search</button>
+    </form>
+  </div>
+  <div class="table-responsive">
+    <table class="table nv-table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (categories.length) { %>
+          <% categories.forEach(function(cat, i) { %>
+            <tr>
+              <td><%= (pagination.currentPage - 1) * 10 + i + 1 %></td>
+              <td><a href="/admin/categories/<%= cat._id %>" class="table-link" style="color: rgb(53, 15, 205);"><%= cat.name %></a></td>
+              <td><code class="slug-code"><%= cat.slug %></code></td>
+              <td><span class="badge <%= cat.isActive ? 'bg-success' : 'bg-secondary' %>"><%= cat.isActive ? 'Active' : 'Inactive' %></span></td>
+              <td><%= new Date(cat.createdAt).toLocaleDateString() %></td>
+              <td class="text-end">
+                <div class="action-btns">
+                  <a href="/admin/categories/<%= cat._id %>" class="action-btn" data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
+                  <a href="/admin/categories/<%= cat._id %>/edit" class="action-btn" data-bs-toggle="tooltip" title="Edit"><i class="bi bi-pencil"></i></a>
+                  <form action="/admin/categories/<%= cat._id %>?_method=DELETE" method="POST" class="d-inline" data-confirm="Delete this category?">
+                    <button type="submit" class="action-btn action-btn-danger" data-bs-toggle="tooltip" title="Delete"><i class="bi bi-trash"></i></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr><td colspan="6" class="text-center text-muted py-5">No categories found</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+  <div class="nv-card-footer">
+    <%- include('../../partials/pagination', { pagination }) %>
+  </div>
+</div>

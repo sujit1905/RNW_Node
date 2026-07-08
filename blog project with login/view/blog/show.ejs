@@ -1,0 +1,177 @@
+<%- include('../partials/header') %>
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOG DETAIL — HERO COVER IMAGE
+══════════════════════════════════════════════════════════ -->
+<div class="article-hero" role="banner">
+  <img
+    src="<%= blog.images || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1400' %>"
+    alt="<%= blog.title %>"
+    loading="eager"
+  >
+  <div class="article-hero__overlay" aria-hidden="true"></div>
+  <div class="article-hero__content">
+    <span class="badge badge-accent" style="margin-bottom:1rem; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.3rem 0.75rem;">
+      <%= blog.category %>
+    </span>
+    <h1 class="article-hero__title"><%= blog.title %></h1>
+    <div class="article-hero__meta">
+      <span class="article-meta-text">
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        &nbsp;<%= new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+      </span>
+      <div class="article-meta-dot" aria-hidden="true"></div>
+      <span class="article-meta-text">
+        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+        &nbsp;<%= Math.ceil((blog.content || '').split(' ').length / 200) || 1 %> min read
+      </span>
+      <div class="article-meta-dot" aria-hidden="true"></div>
+      <span class="article-meta-text">
+        <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        &nbsp;<%= Math.floor(Math.random() * 900 + 100) %> views
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     ARTICLE BODY
+══════════════════════════════════════════════════════════ -->
+<div class="article-layout animate-fade-in-up">
+
+  <!-- Back button -->
+  <a href="/" class="article-back" id="article-back-btn">
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+    Back to stories
+  </a>
+
+  <!-- Author strip -->
+  <div class="author-strip">
+    <div class="author-avatar" aria-hidden="true">
+      <i class="fa-solid fa-pen-nib" style="font-size:1.2rem;"></i>
+    </div>
+    <div class="author-info">
+      <div class="author-info__name">Inkwell Author</div>
+      <div class="author-info__role">Community Writer · Published on Inkwell</div>
+    </div>
+    <div style="margin-left:auto;">
+      <span class="badge badge-primary">
+        <i class="fa-solid fa-star" aria-hidden="true"></i>
+        Featured
+      </span>
+    </div>
+  </div>
+
+  <!-- Article prose content -->
+  <article aria-label="Article content">
+    <div class="article-prose">
+      <%= blog.content %>
+    </div>
+  </article>
+
+  <!-- Social share bar -->
+  <div class="article-share" role="group" aria-label="Share this article">
+    <span class="share-label">
+      <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+      Share:
+    </span>
+    <a
+      href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(blog.title) %>&url=<%= encodeURIComponent('') %>"
+      class="share-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+      id="share-twitter-btn"
+      aria-label="Share on Twitter"
+    >
+      <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+      Twitter
+    </a>
+    <a
+      href="https://www.linkedin.com/sharing/share-offsite/?url=<%= encodeURIComponent('') %>"
+      class="share-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+      id="share-linkedin-btn"
+      aria-label="Share on LinkedIn"
+    >
+      <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+      LinkedIn
+    </a>
+    <button
+      type="button"
+      class="share-btn"
+      id="copy-link-btn"
+      onclick="copyLink(this)"
+      aria-label="Copy article link"
+    >
+      <i class="fa-solid fa-link" aria-hidden="true"></i>
+      Copy link
+    </button>
+  </div>
+
+  <!-- Category and tags row -->
+  <div style="display:flex; align-items:center; gap:var(--sp-3); padding:var(--sp-6) 0; border-top:1px solid var(--clr-border); flex-wrap:wrap;">
+    <span style="font-size:var(--fs-sm); font-weight:600; color:var(--clr-text-muted);">Filed under:</span>
+    <span class="badge badge-primary">
+      <i class="fa-solid fa-tag" aria-hidden="true"></i>
+      <%= blog.category %>
+    </span>
+    <span class="badge badge-secondary">
+      <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+      Writing
+    </span>
+    <span class="badge badge-accent">
+      <i class="fa-solid fa-fire" aria-hidden="true"></i>
+      Trending
+    </span>
+  </div>
+
+  <!-- More from Inkwell CTA -->
+  <div style="background:var(--clr-bg-alt); border:1px solid var(--clr-border); border-radius:var(--radius-xl); padding:var(--sp-8); text-align:center; margin-top:var(--sp-8);">
+    <div style="width:52px;height:52px;background:var(--grad-primary);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-4);" aria-hidden="true">
+      <i class="fa-solid fa-feather-pointed" style="color:white;font-size:1.25rem;"></i>
+    </div>
+    <h3 style="font-family:var(--font-heading);font-size:var(--fs-xl);font-weight:700;color:var(--clr-text);margin-bottom:var(--sp-2);">Enjoyed this story?</h3>
+    <p style="color:var(--clr-text-muted);font-size:var(--fs-sm);margin-bottom:var(--sp-6);">Discover more handcrafted articles from our community of writers.</p>
+    <div style="display:flex; gap:var(--sp-3); justify-content:center; flex-wrap:wrap;">
+      <a href="/" class="btn btn-primary" id="article-more-stories-btn">
+        <i class="fa-solid fa-compass" aria-hidden="true"></i>
+        Explore More Stories
+      </a>
+      <% if (user) { %>
+        <a href="/blog/new" class="btn btn-ghost" id="article-write-btn">
+          <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+          Write a Story
+        </a>
+      <% } else { %>
+        <a href="/auth/register" class="btn btn-ghost" id="article-join-btn">
+          <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+          Join Inkwell
+        </a>
+      <% } %>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Copy link to clipboard
+  function copyLink(btn) {
+    var url = window.location.href;
+    navigator.clipboard.writeText(url).then(function() {
+      var icon = btn.querySelector('i');
+      icon.className = 'fa-solid fa-check';
+      btn.style.color = 'var(--clr-success)';
+      btn.style.borderColor = 'var(--clr-success)';
+      setTimeout(function() {
+        icon.className = 'fa-solid fa-link';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 2000);
+    }).catch(function() {
+      btn.textContent = 'URL: ' + url;
+    });
+  }
+</script>
+
+<%- include('../partials/footer') %>

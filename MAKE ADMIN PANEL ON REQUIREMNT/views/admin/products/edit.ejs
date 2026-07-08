@@ -1,0 +1,86 @@
+<% // Form for editing an existing product record and updating its details. %>
+<% const breadcrumbs = [{ label: 'Dashboard', url: '/admin/dashboard' }, { label: 'Products', url: '/admin/products' }, { label: 'Edit' }] %>
+
+<%- include('../../partials/breadcrumb', { breadcrumbs }) %>
+
+<div class="page-header">
+  <div><h1 class="page-title">Edit Product</h1></div>
+</div>
+
+<div class="nv-card nv-card-form">
+  <!-- Product update form for modifying existing product details -->
+  <form action="/admin/products/<%= product._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="nv-form" data-loading data-cascade data-product>
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label">Product Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control nv-input" name="name" value="<%= product.name %>" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">SKU</label>
+            <input type="text" class="form-control nv-input" name="sku" value="<%= product.sku || '' %>">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Price <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control nv-input" name="price" step="0.01" min="0" value="<%= product.price %>" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Stock</label>
+            <input type="number" class="form-control nv-input" name="stock" min="0" value="<%= product.stock %>">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Status</label>
+            <select class="form-select nv-input" name="isActive">
+              <option value="true" <%= product.isActive ? 'selected' : '' %>>Active</option>
+              <option value="false" <%= !product.isActive ? 'selected' : '' %>>Inactive</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Category <span class="text-danger">*</span></label>
+            <select class="form-select nv-input" name="category" id="categorySelect" required>
+              <% categories.forEach(function(c) { %>
+                <option value="<%= c._id %>" <%= String(product.category) === String(c._id) ? 'selected' : '' %>><%= c.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Subcategory <span class="text-danger">*</span></label>
+            <select class="form-select nv-input" name="subcategory" id="subcategorySelect" required>
+              <% subcategories.forEach(function(s) { %>
+                <option value="<%= s._id %>" <%= String(product.subcategory) === String(s._id) ? 'selected' : '' %>><%= s.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Extra Category <span class="text-danger">*</span></label>
+            <select class="form-select nv-input" name="extraCategory" id="extraCategorySelect" required>
+              <% extraCategories.forEach(function(e) { %>
+                <option value="<%= e._id %>" <%= String(product.extraCategory) === String(e._id) ? 'selected' : '' %>><%= e.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control nv-input" name="description" rows="4"><%= product.description || '' %></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <label class="form-label">Product Image</label>
+        <div class="image-upload-box">
+          <img src="<%= product.image || '/images/placeholder.svg' %>" alt="Preview" class="image-preview" id="productPreview">
+          <input type="file" class="form-control nv-input mt-3" name="image" accept="image/*" data-preview="#productPreview">
+          <small class="text-muted d-block mt-2">Leave empty to keep current image</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/admin/products" class="btn btn-outline-light">Cancel</a>
+      <button type="submit" class="btn btn-primary nv-btn"><span class="btn-text">Update Product</span><span class="btn-loader d-none"><span class="spinner-border spinner-border-sm"></span></span></button>
+    </div>
+  </form>
+</div>

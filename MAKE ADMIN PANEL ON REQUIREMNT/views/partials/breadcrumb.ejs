@@ -1,0 +1,14 @@
+<% // Render breadcrumb navigation for the current page section. %>
+<% if (typeof breadcrumbs !== 'undefined' && breadcrumbs.length) { %>
+<nav aria-label="breadcrumb" class="nv-breadcrumb">
+  <ol class="breadcrumb">
+    <% breadcrumbs.forEach(function(item, index) { %>
+      <% if (index === breadcrumbs.length - 1) { %>
+        <li class="breadcrumb-item active"><%= item.label %></li>
+      <% } else { %>
+        <li class="breadcrumb-item"><a href="<%= item.url %>"><%= item.label %></a></li>
+      <% } %>
+    <% }); %>
+  </ol>
+</nav>
+<% } %>

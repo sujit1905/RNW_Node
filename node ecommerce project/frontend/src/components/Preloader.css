@@ -1,0 +1,112 @@
+.jc-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-velura-950);
+  transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), visibility 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  opacity: 1;
+}
+
+.jc-preloader.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.jc-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+/* Typographic Gold Badge */
+.jc-logo-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(201, 168, 76, 0.35);
+  
+  opacity: 0;
+  transform: translateY(20px);
+  animation: jcPopIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.preloader-text-logo {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--color-velura-950);
+  line-height: 1;
+}
+
+/* Brand Name */
+.jc-brand {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  margin: 0 0 6px;
+  opacity: 0;
+  color: #ffffff;
+  animation: jcFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+/* Tagline */
+.jc-tagline {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold-500);
+  margin: 0 0 32px;
+  opacity: 0;
+  animation: jcFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
+/* Progressive loading bar indicator */
+.jc-preloader-bar {
+  width: 120px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  opacity: 0;
+  animation: jcFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+.jc-preloader-progress {
+  width: 100%;
+  height: 100%;
+  background: var(--color-gold-500);
+  transform-origin: left center;
+  animation: jcProgressSweep 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes jcPopIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes jcFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes jcProgressSweep {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
