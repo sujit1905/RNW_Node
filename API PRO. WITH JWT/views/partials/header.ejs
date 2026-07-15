@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title ? title + ' | ' : '' %>Book Library</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+  <header class="bg-blue-600 text-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold"><a href="/">Book Library</a></h1>
+      <nav>
+        <ul class="flex space-x-4 items-center">
+          <li><a href="/" class="hover:text-blue-200 transition">Home</a></li>
+          <% if(user) { %>
+            <% if(user.role === 'admin') { %>
+              <li><a href="/admin/dashboard" class="hover:text-blue-200 transition">Dashboard</a></li>
+            <% } else { %>
+              <li><a href="/user/profile" class="hover:text-blue-200 transition">Profile</a></li>
+            <% } %>
+            <li><a href="/auth/logout" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition">Logout</a></li>
+          <% } else { %>
+            <li><a href="/auth/login" class="hover:text-blue-200 transition">Login</a></li>
+            <li><a href="/auth/register" class="bg-white text-blue-600 hover:bg-gray-100 px-3 py-1 rounded transition">Register</a></li>
+          <% } %>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+    <%- include('./messages') %>

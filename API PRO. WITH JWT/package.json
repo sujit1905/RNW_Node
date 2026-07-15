@@ -1,0 +1,33 @@
+{
+  "name": "thirdparty-jwt-crud-api",
+  "version": "1.0.0",
+  "description": "JWT-authenticated CRUD API with third-party book data",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "build:css": "npx tailwindcss -i ./public/css/input.css -o ./public/css/style.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^9.7.3",
+    "multer": "^2.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.2",
+    "nodemon": "^3.1.14",
+    "postcss": "^8.5.16",
+    "tailwindcss": "^4.3.2"
+  }
+}
